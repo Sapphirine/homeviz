@@ -19,7 +19,7 @@ from django.urls import path, re_path
 from . import view
 
 urlpatterns = [
-	path('hello', view.hello),
+	path('', view.hello),
     # re_path(r'^admin/', admin.site.urls),
     # re_path(r'^$', default_urlconf),
     
