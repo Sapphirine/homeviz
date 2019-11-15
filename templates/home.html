@@ -35,6 +35,18 @@
         .county-boundary:hover, .state:hover {
             fill: orange;
         }
+
+		div.tooltip { 
+			position: absolute;     
+			text-align: center;     
+			width: 80px;          
+			height: 14px;         
+			padding: 2px;       
+			font: 12px sans-serif;    
+			background: #fff; 
+			border: 0px;        
+			pointer-events: none;     
+		}
     </style>
 </head>
 <body>
@@ -61,6 +73,10 @@
             .attr('class', 'center-container')
             .attr('height', height + margin.top + margin.bottom)
             .attr('width', width + margin.left + margin.right);
+
+		var tooltip = d3.select("body").append("div") 
+			.attr("class", "tooltip")       
+			.style("opacity", 0);
 
         svg.append('rect')
             .attr('class', 'background center-container')
@@ -101,7 +117,20 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "county-boundary")
-                .on("click", reset);
+                .on("click", reset)
+                .on("mouseover", function(d){
+                	tooltip.transition()
+                	.duration(200)
+                	.style("opacity", 0.6);
+                	tooltip.html(d.properties.name)
+                	.style("left", (d3.event.pageX) + "px")
+                	.style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d){
+                	tooltip.transition()
+                	.duration(500)
+                	.style("opacity", 0);
+                });
 
             g.append("g")
                 .attr("id", "states")
@@ -110,7 +139,20 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "state")
-                .on("click", clicked);
+                .on("click", clicked)
+                .on("mouseover", function(d){
+                	tooltip.transition()
+                	.duration(200)
+                	.style("opacity", 0.6);
+                	tooltip.html(d.properties.name)
+                	.style("left", (d3.event.pageX) + "px")
+                	.style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d){
+                	tooltip.transition()
+                	.duration(500)
+                	.style("opacity", 0);
+                });
 
 
             g.append("path")
