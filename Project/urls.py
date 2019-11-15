@@ -20,7 +20,7 @@ from . import view
 
 urlpatterns = [
 	re_path('hello', view.hello),
-    re_path(r'^admin/', admin.site.urls),
-    re_path(r'^$', default_urlconf),
+    # re_path(r'^admin/', admin.site.urls),
+    # re_path(r'^$', default_urlconf),
     
 ]
