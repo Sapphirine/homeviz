@@ -5,7 +5,6 @@ from google.oauth2 import service_account
 import logging
 import sys
 import os
-from google.cloud import storage
 
 logger = logging.getLogger(__name__)
 
