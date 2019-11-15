@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.views.debug import default_urlconf
 from django.urls import path, re_path
+from . import view
 
 urlpatterns = [
+	path('hello', view.hello),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^$', default_urlconf),
+    
 ]
