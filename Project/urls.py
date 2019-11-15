@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('home', view.home),
 	path('hello', view.hello),
     path('dashboard', view.dashboard),
     path('connection', view.connection),

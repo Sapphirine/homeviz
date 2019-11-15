@@ -37,6 +37,33 @@ credentials = service_account.Credentials.from_service_account_info(service_acco
 
 # credentials = service_account.Credentials.from_service_account_file(path)
 
+def home(request):
+    # pandas_gbq.context.credentials = credentials
+    # pandas_gbq.context.project = "bigdata-253023"
+    # SQL1 = 'SELECT * FROM hw4.nodes ORDER BY node ASC'
+    # df1 = pandas_gbq.read_gbq(SQL1)
+
+    # SQL2 = 'SELECT * FROM hw4.edges ORDER BY source ASC'
+    # df2 = pandas_gbq.read_gbq(SQL2)
+
+    data = {}
+
+    # data['n'] = df1.to_dict(orient='record')
+    # data['e'] = df2.drop_duplicates().to_dict(orient='record')
+
+    '''
+        TODO: Finish the SQL to query the data, it should be limited to 8 rows. 
+        Then process them to format below:
+        Format of data:
+        {'n': [xxx, xxx, xxx, xxx],
+         'e': [{'source': xxx, 'target': xxx},
+                {'source': xxx, 'target': xxx},
+                ...
+                ]
+        }
+    '''
+    return render(request, 'home.html', data)
+
 def hello(request):
     context = {}
     context['content1'] = 'Hello World!'
