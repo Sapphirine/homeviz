@@ -64,6 +64,10 @@ def home(request):
     '''
     return render(request, 'home.html', data)
 
+def test(request):
+    data = {}
+    return render(request, 'test.html', data)
+
 def hello(request):
     context = {}
     context['content1'] = 'Hello World!'

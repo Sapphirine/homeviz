@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>D3: Zoom in to reveal counties</title>
+    <title>HomeViz</title>
     <style>
         .background {
             fill: none;
@@ -38,11 +38,14 @@
     </style>
 </head>
 <body>
+	<h1>HomeViz - US Home Prices Visualization</h1>
     <div class="viz"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/topojson.v3.min.js"></script>
     <!-- <script type="text/javascript" src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script> -->
     <script type="text/javascript">
+    	var us;
+
         var margin = {
             top: 10,
             bottom: 10,
@@ -66,8 +69,13 @@
             .on('click', clicked);
 
 
-        Promise.resolve(d3.json('us-counties.topojson'))
+        Promise.resolve(d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json'))
             .then(ready);
+
+        // d3.json("https://d3js.org/us-10m.v1.json", function (json){
+        // 	us = json;
+        // 	console.log(us);
+        // });
 
         var projection = d3.geoAlbersUsa()
             .translate([width /2 , height / 2])
@@ -83,6 +91,8 @@
             .attr('height', height + margin.top + margin.bottom)
 
         function ready(us) {
+
+        	console.log(us);
 
             g.append("g")
                 .attr("id", "counties")
