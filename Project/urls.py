@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.views.debug import default_urlconf
 from django.urls import path, re_path
 from . import view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 	path('hello', view.hello),
@@ -24,6 +26,6 @@ urlpatterns = [
     path('connection', view.connection),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^$', default_urlconf), 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
