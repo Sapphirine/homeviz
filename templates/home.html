@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HomeViz</title>
     <style>
@@ -39,8 +40,8 @@
 		div.tooltip { 
 			position: absolute;     
 			text-align: center;     
-			width: 80px;          
-			height: 14px;         
+			width: 150px;          
+			height: 40px;         
 			padding: 2px;       
 			font: 12px sans-serif;    
 			background: #fff; 
@@ -56,7 +57,15 @@
     <script type="text/javascript" src="https://d3js.org/topojson.v3.min.js"></script>
     <!-- <script type="text/javascript" src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script> -->
     <script type="text/javascript">
-    	var us;
+
+    	var state_all = {{ state_all | safe }}
+    	console.log(state_all)
+
+    	var lowColor = '#98f692'//'#f9f9f9'
+		var highColor = '#bc2a66'//'#bc2a66'
+		var minVal = 80000
+		var maxVal = 400000
+		var ramp = d3.scaleLinear().domain([minVal,maxVal]).range([lowColor,highColor])
 
         var margin = {
             top: 10,
@@ -122,7 +131,7 @@
                 	tooltip.transition()
                 	.duration(200)
                 	.style("opacity", 0.6);
-                	tooltip.html(d.properties.name)
+                	tooltip.html(d.properties.name) 
                 	.style("left", (d3.event.pageX) + "px")
                 	.style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -139,12 +148,13 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "state")
+                .style("fill", function(d){return ramp(state_all[d.properties.name])})
                 .on("click", clicked)
                 .on("mouseover", function(d){
                 	tooltip.transition()
                 	.duration(200)
-                	.style("opacity", 0.6);
-                	tooltip.html(d.properties.name)
+                	.style("opacity", 0.8);
+                	tooltip.html(d.properties.name + "<br/>Median Home Prices:" + state_all[d.properties.name])
                 	.style("left", (d3.event.pageX) + "px")
                 	.style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -159,6 +169,51 @@
                 .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
                 .attr("id", "state-borders")
                 .attr("d", path);
+
+            // add a legend
+			var w = 140, h = 300;
+
+			var key = d3.select("g")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h)
+				.attr("class", "legend");
+
+			var legend = key.append("defs")
+				.append("svg:linearGradient")
+				.attr("id", "gradient")
+				.attr("x1", "100%")
+				.attr("y1", "0%")
+				.attr("x2", "100%")
+				.attr("y2", "100%")
+				.attr("spreadMethod", "pad");
+
+			legend.append("stop")
+				.attr("offset", "0%")
+				.attr("stop-color", highColor)
+				.attr("stop-opacity", 1);
+				
+			legend.append("stop")
+				.attr("offset", "100%")
+				.attr("stop-color", lowColor)
+				.attr("stop-opacity", 1);
+
+			key.append("rect")
+				.attr("width", w - 100)
+				.attr("height", h)
+				.style("fill", "url(#gradient)")
+				.attr("transform", "translate(0,10)");
+
+			var y = d3.scaleLinear()
+				.range([h, 0])
+				.domain([minVal, maxVal]);
+
+			var yAxis = d3.axisRight(y);
+
+			key.append("g")
+				.attr("class", "y axis")
+				.attr("transform", "translate(41,10)")
+				.call(yAxis)
 
         }
 
