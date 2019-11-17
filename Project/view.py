@@ -40,37 +40,40 @@ credentials = service_account.Credentials.from_service_account_info(service_acco
 def home(request):
     pandas_gbq.context.credentials = credentials
     pandas_gbq.context.project = "bigdata-253023"
-    # SQL1 = 'SELECT * FROM hw4.nodes ORDER BY node ASC'
+
+    # SQL1 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_all"
     # df1 = pandas_gbq.read_gbq(SQL1)
-
-    # SQL2 = 'SELECT * FROM hw4.edges ORDER BY source ASC'
+    # SQL2 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_1bed"
     # df2 = pandas_gbq.read_gbq(SQL2)
+    # SQL3 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_2bed"
+    # df3= pandas_gbq.read_gbq(SQL3)
+    # SQL4 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_3bed"
+    # df4 = pandas_gbq.read_gbq(SQL4)
+    # SQL5 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_4bed"
+    # df5 = pandas_gbq.read_gbq(SQL5)
+    # SQL6 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_5bedOrMore"
+    # df6 = pandas_gbq.read_gbq(SQL6)
+    # SQL7 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_medianPerSqft"
+    # df7 = pandas_gbq.read_gbq(SQL7)
 
-    SQL1 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_all"
+    SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
     df1 = pandas_gbq.read_gbq(SQL1)
-    SQL2 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_1bed"
-    df2 = pandas_gbq.read_gbq(SQL2)
-    SQL3 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_2bed"
-    df3= pandas_gbq.read_gbq(SQL3)
-    SQL4 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_3bed"
-    df4 = pandas_gbq.read_gbq(SQL4)
-    SQL5 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_4bed"
-    df5 = pandas_gbq.read_gbq(SQL5)
-    SQL6 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_5bedOrMore"
-    df6 = pandas_gbq.read_gbq(SQL6)
-    SQL7 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_medianPerSqft"
-    df7 = pandas_gbq.read_gbq(SQL7)
 
+    col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
+                "state_4bed", "state_5bed", "state_sqft"]
 
     data = {}
     # data["state_all"] = df1.to_dict(orient='record')
-    data["state_all"] =  df1.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_1bed"] =  df2.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_2bed"] =  df3.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_3bed"] =  df4.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_4bed"] =  df5.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
-    data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_all"] =  df1.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_1bed"] =  df2.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_2bed"] =  df3.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_3bed"] =  df4.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_4bed"] =  df5.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
+    # data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
+
+    for cat in col_label:
+        data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
 
     return render(request, 'home.html', data)
 

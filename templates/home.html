@@ -39,8 +39,8 @@
 
 		#inds{
 			position:absolute;
-			top:100px;
-			left:1000px;
+/*			top:100px;
+			left:1000px;*/
 		}
 
 		div.tooltip { 
@@ -109,6 +109,10 @@
 			.attr("class", "tooltip")       
 			.style("opacity", 0);
 
+		d3.select("#inds")
+			.style("top", 100 + "px")
+			.style("left", width * 0.8 + "px");
+
 		// var ind = d3.select("inds")
 		// 	.style("left", 200)
 		// 	.style("top", 40);
@@ -156,7 +160,7 @@
 			var ramp = d3.scaleLinear().domain([minVal,maxVal*norm]).range([lowColor,highColor])
 
 			// add a legend
-			var w = 140, h = 300;
+			var w = width/10, h = height/2;
 
 			var key = d3.select("g")
 				.append("svg")
@@ -184,7 +188,7 @@
 				.attr("stop-opacity", 1);
 
 			key.append("rect")
-				.attr("width", w - 100)
+				.attr("width", w/4)
 				.attr("height", h)
 				.style("fill", "url(#gradient)")
 				.attr("transform", "translate(0,10)");
