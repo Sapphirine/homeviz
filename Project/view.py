@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 service_account_info = {
   "type": "service_account",
   "project_id": "bigdata-253023",
-  "private_key_id": "03aeb7de872c1c1725ab46764fecaadbd0068d5d",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDNg11JCqKmMRwr\nBffn4brWRVWE3et7a1mE1QrEvx/HSiHJQ5+3DttJxvvfiJP7a/MdxZX5rO+zTxVw\nz4SgcTZxce2YrearHh4/vQHtxe62R1ZQws6viiXeRp9JOrwCVINztLdb0RoJHPM6\nDoZIV0YTBwpmeL1lyxkwycAkCDJm9lbM9UNkHOK16DN9MppAFbs21wsCqcMwdcV5\nPkcYnlBWe+MftnLQl64HU33E3XO8F3kgi+8QL3d+VAEVXC/K6+yJWg1B/RpYYchC\nUNyP3ceX4Y/Ga5idL5YEk6Q7RsZHX+ycu0nGv3UisIrTQsxRPJo1JD4/69DbzKFd\nlTSXjv1bAgMBAAECggEADfVHSjU14SoXuteqbpjhwDja+0MOrIYY1pFDrHjmAc/y\npdajy+KZ7pOxurfDg+w2icXy5Dokg54Hm5m0l9MTUAwysiUpiWNqdDN0Tz/GG/eS\nELp9IDthTAypjTyMgBoDsuxKFysyD1QPNFkVMhJKDkkdoeJpzAv0d4r/CP4iMjpC\nIf0Wlh84MlSTcd3oI9fe6is93W/LVMjIYn6hsKV1lOoh2ecLNe5Px35Vmu5QljvO\necm/lcR4waxxQAB27hvGIswb0d7RDAAzhdFBr6xLTh+WhezzpGgmKvqL8Tvhp7bF\nECZpD9X1uKb/dnFxR/68kvqFN3pBF2QI8ZGTGdczdQKBgQDo/yUXK1ucpQC/RMn9\nauTZRu76N4six253ijeuthZby5IQlQLLgOS95MRxMum+SFrERmYfSV5IF1iz9O5b\nw66qfQSGB9jkjQ3X+p3vauhDxF9KPLuaQxf8KLktcOtPosr+udtT1llK5sY2Rrhq\nhmqwhHMafONIaHwQ7KIzgFZE1wKBgQDhzZbu8tvsF/jdVpejglLboKnrvDbwb2MC\nP/IUzF2X5/AdSZzX2Bvlksn0tzma8gXNk8lsnRt7I3gW+MfXCyNwlOnWhQP6leTD\nvDRIUO3KUCo19es37jqc0DkxR4jvEdUAgYHAdPwH8LRZAneDsLBZm5RJIsZmDxTY\ns0oZFBk3HQKBgAH72ib+WYNV7FG0ljuwI06uSe6bdnXPWONvq9Wy+zHA4/d8LU/q\nQwhS4FFOa6sRFqTBLLFrgIAAouK1XSou2lfdRKKXgoM/qDSEj7+wG1YoX99T8Qz5\nMUUWW61FXtuIuU29614lXxFCMcHYjE1r45CpMAmzsoO1UAkc2qyxlQp1AoGAbFr0\n19twz329bbF0+QC79CrH/5iFIKHC+DxpVbOwIgop/lPp0OYilOr4wNb/7KvBPyJx\nIQ7PNisSIKvncfklW4wKHmgcPa6aZZc125ICWfhYGSbWZjOKqt984nn6awa6mRCM\njCdXHhRS5ve5FFfAeG+hG+t1G1qXXVnD7/7mDr0CgYAR2ryreP3hQXo3F8apYN1D\nhFbqTdXGT3nqtWnTTlWlN3xxDHjLf13ph/OjMhwAIWox0eFI/UOpmBWL5J0G4sOe\n9MnJYmRF2vDVz33JdkVW8umWjShsa5lNgMr7ydFoE4Jq3opkE4ZB83yRoNLAMjLA\nhViFvYVMxAnBzwGBn2faIA==\n-----END PRIVATE KEY-----\n",
+  "private_key_id": "0cdcd493b2cc3ffaaa5fb717f5afba8605b67039",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDaBB5vjb91VW2H\n2OLq0Q2m4R+N9v/myDLoFBivQ5WBNlBojrdcIFSARISub4bE+/9xumlB2V0WVFCD\n3A6eey7k3+asuUo3um5m0bXyA1bI0CAbBivDBbDzRrILldHtgWhsUTlY1ITtYOXf\nkbGFzTv6bKbG7IYVYXXTtGOCNoPBfihYVkWo9T+v6tOQlEZ6V/jN0gV/edLr8hha\n1SZWhrOep1JR7nOtlcN0+TlyHvzXTSdAx9Sw3Zp/VWbySu7pVOPTNesYKTGpOFOl\ncr19ueaYghryG6Rzug1x1aizJxcFd3VlvFkFNanWvqpGQggFSlT+Sa3EAZl8/RJq\nyb8e+RWbAgMBAAECggEAAi3ck+6RGwUcpGZL3MkKirI8+AFRylHayO3lGmZT0fMv\nDaf4wCGpHjeIw15ftM6Qc8C2kjuZuofHQtsw6RYj/XwOfOECCFEiA9ixP/GGYhY0\nvEuLpcg7iqpE/qtNXxw3hmYqDK/L/MdXXTexkXOHCcumtJWSVwGLRXUUSD503AjT\n6E6TBVzi/1tajCK3ONkUVJXyrsVbSXRV25Pn8409bcgmf6NJmlv/kgQNtl3bGD5L\n9Eh6ZKXkUN0v5QVm7RRm6yjIyiehN7flTb5MBw6Hy521CrO2YnWYl19kMpbm20rb\nlqfpaje8Y7e7mA6clAAX09d0n2ZgT7bbPuhLpKBiuQKBgQDx0LHHJtz5nJrPaL5M\nc2X2UPN9bTxtg/SbmpV8POmYXfnV2uQDPOGte9r0nu6ui5qFH2XpLBfdlnoiNLF1\nK7JfRkukpZ82uSu4QQwe+22O1IrAMXcYLSpUf+zLBpIIzQR92zIiE1CSe0ZX1/s7\nyu8PyQSjJpYBnQ9J9BkmcI7L6QKBgQDmzglLahALh7GEFms5iGl3MA2WCZwgLk7J\nreFB99hYilaRXuLfzbVctgWgjvNHkiKl4Tli4EC6EvFiNQsKcjWhI8/3kDzDD8MC\nR6VqTP/LkE2VVOc9NQ80pUkT0OelYm+UzJXKwuxA764dG+7BWipVp94a2wxeINaQ\nIt0rospW4wKBgAWelvMM2SfH1uUpBvsZ123A9dedWUEmRuHy1rR7aeZLkMnCe3gD\nyy7P6Qe0RdGyltWvJBwmFSvmGlJ/LPyPFmcWaB2cZ7XK2dQ/VrvFlgcys0LCI4Vh\nT1GFY4hYT756nTcbh++4yS+OQ9U4xLLgBWw1fLEZ7XR+JOPQE2GMThU5AoGBANdq\nL5SablVElXLxtavh3IVobRW+7F/AuLpVNmtqlhq1KuzNAbTeesoH/SKIqRkAlKP7\nnKLjKKZCrdX6Kc7bH6DBGwY1MfDg0iJbmlCngwqMKU0aDCS9U+7P4W/ER5+9SuU3\nOQsgeH529Sun+WOu8to1LgAkt9tWjMvELmberjj/AoGAGM2Rb0DjYM0twoMg8JN6\no2gIb0AfBJUUx3u2Qc7QA5K3QYjUs44WgYV66Bv+Jz0693UxsR0Iyyaz13ZM5JAI\nybbVdvIf4AM28DKcBvjN1k9XBRl5dOEylXgjo88uGMBFIstDKFfOjfw1DbFM/vlZ\nVlugW/TsKW1yjSWhUlFECf8=\n-----END PRIVATE KEY-----\n",
   "client_email": "bigdata-admin@bigdata-253023.iam.gserviceaccount.com",
   "client_id": "101391203461485390588",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -48,10 +48,29 @@ def home(request):
 
     SQL1 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_all"
     df1 = pandas_gbq.read_gbq(SQL1)
+    SQL2 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_1bed"
+    df2 = pandas_gbq.read_gbq(SQL2)
+    SQL3 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_2bed"
+    df3= pandas_gbq.read_gbq(SQL3)
+    SQL4 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_3bed"
+    df4 = pandas_gbq.read_gbq(SQL4)
+    SQL5 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_4bed"
+    df5 = pandas_gbq.read_gbq(SQL5)
+    SQL6 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_5bedOrMore"
+    df6 = pandas_gbq.read_gbq(SQL6)
+    SQL7 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_medianPerSqft"
+    df7 = pandas_gbq.read_gbq(SQL7)
+
 
     data = {}
     # data["state_all"] = df1.to_dict(orient='record')
     data["state_all"] =  df1.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_1bed"] =  df2.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_2bed"] =  df3.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_3bed"] =  df4.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_4bed"] =  df5.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
+    data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
 
     return render(request, 'home.html', data)
 
