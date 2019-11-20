@@ -59,8 +59,19 @@ def home(request):
     SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
     df1 = pandas_gbq.read_gbq(SQL1)
 
-    col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
+    SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
+    df2 = pandas_gbq.read_gbq(SQL2)
+    
+    # Convert id column (state + county code) to string and add leading zeros 
+    # (to match TOPOJSON id format)
+    df2['id'] = df2['id'].astype(str)
+    df2['id'] = df2['id'].apply(lambda x: x.zfill(5))
+
+    state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
                 "state_4bed", "state_5bed", "state_sqft"]
+
+    county_col_label = ["county_all", "county_1bed", "county_2bed", "county_3bed",
+                "county_4bed", "county_5bed", "county_sqft"]
 
     data = {}
     # data["state_all"] = df1.to_dict(orient='record')
@@ -72,8 +83,11 @@ def home(request):
     # data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
     # data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
 
-    for cat in col_label:
+    for cat in state_col_label:
         data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
+
+    for cat in county_col_label:
+        data[cat] = df2.set_index("id")[cat].dropna().to_dict()
 
     return render(request, 'home.html', data)
 

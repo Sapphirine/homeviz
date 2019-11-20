@@ -88,6 +88,20 @@
     	console.log(state_5bed)
     	var state_sqft = {{ state_sqft | safe }}
     	console.log(state_sqft)
+    	var county_all = {{ county_all | safe }}
+    	console.log(county_all)
+    	var county_1bed = {{ county_1bed | safe }}
+    	console.log(county_1bed)
+    	var county_2bed = {{ county_2bed | safe }}
+    	console.log(county_2bed)
+    	var county_3bed = {{ county_3bed | safe }}
+    	console.log(county_3bed)
+    	var county_4bed = {{ county_4bed | safe }}
+    	console.log(county_4bed)
+    	var county_5bed = {{ county_5bed | safe }}
+    	console.log(county_5bed)
+    	var county_sqft = {{ county_sqft | safe }}
+    	console.log(county_sqft)
 
         var margin = {
             top: 10,
@@ -150,6 +164,8 @@
 			
 			data = state_all
         	data_label = "Median Home Price: "
+
+        	data1 = county_all
        		
        		var lowColor = '#98f692'//'#f9f9f9'
 			var highColor = '#bc2a66'//'#bc2a66'
@@ -201,7 +217,7 @@
 
 			key.append("g")
 				.attr("class", "y axis")
-				.attr("transform", "translate(41,10)")
+				.attr("transform", "translate(" + w/3.5 + "," + 10 + ")")
 				.call(yAxis)
 
       		g.append("g")
@@ -211,12 +227,13 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "county-boundary")
+                .style("fill", function(d){return ramp(data1[d.id])})
                 .on("click", reset)
                 .on("mouseover", function(d){
                 	tooltip.transition()
                 	.duration(200)
                 	.style("opacity", 0.6);
-                	tooltip.html(d.properties.name) 
+                	tooltip.html(d.properties.name + "<br/>" + data_label + data1[d.id]) 
                 	.style("left", (d3.event.pageX) + "px")
                 	.style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -260,83 +277,52 @@
       				var selected = selection.options[selection.selectedIndex].value
       				if (selected == "all") {
       					data = state_all
+      					data1 = county_all
       					data_label = "Median Home Price: "
       				} else if (selected == "1bed") {
       					data = state_1bed
+      					data1 = county_1bed
       					data_label = "1Bed Home Price: "
       				} else if (selected == "2bed") {
       					data = state_2bed
+      					data1 = county_2bed
       					data_label = "2Bed Home Price: "
       				} else if (selected == "3bed") {
       					data = state_3bed
+      					data1 = county_3bed
       					data_label = "3Bed Home Price: "
       				} else if (selected == "4bed") {
       					data = state_4bed
+      					data1 = county_4bed
       					data_label = "4Bed Home Price: "
       				} else if (selected == "5bed") {
       					data = state_5bed
+      					data1 = county_5bed
       					data_label = "5Bed+ Home Price: "
       				} else if (selected == "sqft") {
       					data = state_sqft
+      					data1 = county_sqft
       					data_label = "Home Price by Sqft: "
       				}
       				keys = Object.keys(data);
 					minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ));
 					maxVal = Math.max.apply(null, keys.map(function(x) { return data[x]} ));
 					ramp = d3.scaleLinear().domain([minVal,maxVal*norm]).range([lowColor,highColor])
-      				UpdateMap(data)
+      				UpdateMap(data, data1);
       			})
 
-        	function UpdateMap(data) {
-	            // g.append("g")
-	            //     .attr("id", "counties")
-	            //     .selectAll("path")
-	            //     .data(topojson.feature(us, us.objects.counties).features)
-	            //     .enter().append("path")
-	            //     .attr("d", path)
-	            //     .attr("class", "county-boundary")
-	            //     .on("click", reset)
-	            //     .on("mouseover", function(d){
-	            //     	tooltip.transition()
-	            //     	.duration(200)
-	            //     	.style("opacity", 0.6);
-	            //     	tooltip.html(d.properties.name) 
-	            //     	.style("left", (d3.event.pageX) + "px")
-	            //     	.style("top", (d3.event.pageY - 28) + "px");
-	            //     })
-	            //     .on("mouseout", function(d){
-	            //     	tooltip.transition()
-	            //     	.duration(500)
-	            //     	.style("opacity", 0);
-	                // });
+        	function UpdateMap(data, data1) {
 
-	            g.append("g")
-	                .attr("id", "states")
-	                .selectAll("path")
-	                .data(topojson.feature(us, us.objects.states).features)
-	                .enter().append("path")
-	                .attr("d", path)
-	                .attr("class", "state")
-	                .style("fill", function(d){return ramp(data[d.properties.name])})
-	                .on("click", clicked)
-	                .on("mouseover", function(d){
-	                	tooltip.transition()
-	                	.duration(200)
-	                	.style("opacity", 0.8);
-	                	tooltip.html(d.properties.name + "<br/>" + data_label + data[d.properties.name])
-	                	.style("left", (d3.event.pageX) + "px")
-	                	.style("top", (d3.event.pageY - 28) + "px");
-	                })
-	                .on("mouseout", function(d){
-	                	tooltip.transition()
-	                	.duration(500)
-	                	.style("opacity", 0);
-	                });
+	            g.selectAll(".county-boundary")
+	            	.style("fill", function(d){return ramp(data1[d.id])});
+
+	            g.selectAll(".state")
+	                .style("fill", function(d){return ramp(data[d.properties.name])});
 	                            
-	            g.append("path")
-	                .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-	                .attr("id", "state-borders")
-	                .attr("d", path);
+	            // g.append("path")
+	            //     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+	            //     .attr("id", "state-borders")
+	            //     .attr("d", path);
 
 	            // update legend
 				y = d3.scaleLinear()
