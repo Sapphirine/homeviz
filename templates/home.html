@@ -231,8 +231,8 @@
                 .on("click", reset)
                 .on("mouseover", function(d){
                 	tooltip.transition()
-                	.duration(200)
-                	.style("opacity", 0.6);
+                	.duration(900)
+                	.style("opacity", 0.8);
                 	tooltip.html(d.properties.name + "<br/>" + data_label + data1[d.id]) 
                 	.style("left", (d3.event.pageX) + "px")
                 	.style("top", (d3.event.pageY - 28) + "px");
@@ -250,11 +250,11 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "state")
-                .style("fill", function(d){return ramp(data[d.properties.name])})
+                // .style("fill", function(d){return ramp(data[d.properties.name])})
                 .on("click", clicked)
                 .on("mouseover", function(d){
                 	tooltip.transition()
-                	.duration(200)
+                	.duration(900)
                 	.style("opacity", 0.8);
                 	tooltip.html(d.properties.name + "<br/>" + data_label + data[d.properties.name])
                 	.style("left", (d3.event.pageX) + "px")
@@ -266,6 +266,10 @@
                 	.style("opacity", 0);
                 });
                             
+            g.selectAll(".state").transition()
+            	.style("fill", function(d){return ramp(data[d.properties.name])})
+            	.duration(2000);
+
             g.append("path")
                 .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
                 .attr("id", "state-borders")
@@ -313,11 +317,13 @@
 
         	function UpdateMap(data, data1) {
 
-	            g.selectAll(".county-boundary")
-	            	.style("fill", function(d){return ramp(data1[d.id])});
+	            g.selectAll(".county-boundary").transition()
+	            	.style("fill", function(d){return ramp(data1[d.id])})
+	            	.duration(1000);
 
-	            g.selectAll(".state")
-	                .style("fill", function(d){return ramp(data[d.properties.name])});
+	            g.selectAll(".state").transition()
+	                .style("fill", function(d){return ramp(data[d.properties.name])})
+	                .duration(1000);
 	                            
 	            // g.append("path")
 	            //     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
@@ -359,7 +365,7 @@
                 translate = [width / 2 - scale * x, height / 2 - scale * y];
 
             g.transition()
-                .duration(750)
+                .duration(1500)
                 .style("stroke-width", 1.5 / scale + "px")
                 .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
         }
@@ -370,8 +376,8 @@
             active = d3.select(null);
 
             g.transition()
-                .delay(100)
-                .duration(750)
+                // .delay(100)
+                .duration(1500)
                 .style("stroke-width", "1.5px")
                 .attr('transform', 'translate('+margin.left+','+margin.top+')');
 
