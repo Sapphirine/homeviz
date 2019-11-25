@@ -37,11 +37,11 @@
             fill: orange;
         }
 
-		#inds{
-			position:absolute;
-/*			top:100px;
-			left:1000px;*/
-		}
+    		#dropdown{
+    			position:absolute;
+/*    			top:100px;
+    			left:1000px;*/
+    		}
 
 		div.tooltip { 
 			position: absolute;     
@@ -58,369 +58,56 @@
 </head>
 <body>
 	<h1>HomeViz - US Home Prices Visualization</h1>
+
+  <select id="dropdown">
+    <option value="all" selected="selected">All</option>
+    <option value="1bed">1 Bedroom</option>
+    <option value="2bed">2 Bedrooms</option>
+    <option value="3bed">3 Bedrooms</option>
+    <option value="4bed">4 Bedrooms</option>
+    <option value="5bed">5 Bedrooms+</option>
+    <option value="sqft">Median Sqft</option>
+  </select>
+
     <div class="viz"></div>
     {% load static %}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/topojson.v3.min.js"></script>
-    <!-- <script type="text/javascript" src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script> -->
-    
-	<select id="inds">
-	   	<option value="all" selected="selected">All</option>
-	   	<option value="1bed">1 Bedroom</option>
-	   	<option value="2bed">2 Bedrooms</option>
-	   	<option value="3bed">3 Bedrooms</option>
-	   	<option value="4bed">4 Bedrooms</option>
-	   	<option value="5bed">5 Bedrooms+</option>
-	   	<option value="sqft">Median Sqft</option>
-	</select>
+    <script src="{% static "js/home.js" %}"></script>
 
-    <script type="text/javascript">
-    	var state_all = {{ state_all | safe }}
-    	console.log(state_all)
-    	var state_1bed = {{ state_1bed | safe }}
-    	console.log(state_1bed)
-    	var state_2bed = {{ state_2bed | safe }}
-    	console.log(state_2bed)
-    	var state_3bed = {{ state_3bed | safe }}
-    	console.log(state_3bed)
-    	var state_4bed = {{ state_4bed | safe }}
-    	console.log(state_4bed)
-    	var state_5bed = {{ state_5bed | safe }}
-    	console.log(state_5bed)
-    	var state_sqft = {{ state_sqft | safe }}
-    	console.log(state_sqft)
-    	var county_all = {{ county_all | safe }}
-    	console.log(county_all)
-    	var county_1bed = {{ county_1bed | safe }}
-    	console.log(county_1bed)
-    	var county_2bed = {{ county_2bed | safe }}
-    	console.log(county_2bed)
-    	var county_3bed = {{ county_3bed | safe }}
-    	console.log(county_3bed)
-    	var county_4bed = {{ county_4bed | safe }}
-    	console.log(county_4bed)
-    	var county_5bed = {{ county_5bed | safe }}
-    	console.log(county_5bed)
-    	var county_sqft = {{ county_sqft | safe }}
-    	console.log(county_sqft)
+  <script>
+      var data_all = {{ data | safe }}
+      console.log(data_all)
 
-        var margin = {
-            top: 10,
-            bottom: 10,
-            left: 10,
-            right:10
-        }, width = parseInt(d3.select('.viz').style('width'))
-            , width = width - margin.left - margin.right
-            , mapRatio = 0.5
-            , height = width * mapRatio
-            , active = d3.select(null);
+      // var state_all = {{ state_all | safe }}
+      // console.log(state_all)
+      // var state_1bed = {{ state_1bed | safe }}
+      // console.log(state_1bed)
+      // var state_2bed = {{ state_2bed | safe }}
+      // console.log(state_2bed)
+      // var state_3bed = {{ state_3bed | safe }}
+      // console.log(state_3bed)
+      // var state_4bed = {{ state_4bed | safe }}
+      // console.log(state_4bed)
+      // var state_5bed = {{ state_5bed | safe }}
+      // console.log(state_5bed)
+      // var state_sqft = {{ state_sqft | safe }}
+      // console.log(state_sqft)
+      // var county_all = {{ county_all | safe }}
+      // console.log(county_all)
+      // var county_1bed = {{ county_1bed | safe }}
+      // console.log(county_1bed)
+      // var county_2bed = {{ county_2bed | safe }}
+      // console.log(county_2bed)
+      // var county_3bed = {{ county_3bed | safe }}
+      // console.log(county_3bed)
+      // var county_4bed = {{ county_4bed | safe }}
+      // console.log(county_4bed)
+      // var county_5bed = {{ county_5bed | safe }}
+      // console.log(county_5bed)
+      // var county_sqft = {{ county_sqft | safe }}
+      // console.log(county_sqft)
+  </script>
 
-        var svg = d3.select('.viz').append('svg')
-            .attr('class', 'center-container')
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('width', width + margin.left + margin.right);
-
-		var tooltip = d3.select("body").append("div") 
-			.attr("class", "tooltip")       
-			.style("opacity", 0);
-
-		d3.select("#inds")
-			.style("top", 100 + "px")
-			.style("left", width * 0.8 + "px");
-
-		// var ind = d3.select("inds")
-		// 	.style("left", 200)
-		// 	.style("top", 40);
-
-        svg.append('rect')
-            .attr('class', 'background center-container')
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('width', width + margin.left + margin.right)
-            .on('click', clicked);
-
-
-        Promise.resolve(d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json'))
-            .then(DrawMap);
-
-        // d3.json("https://d3js.org/us-10m.v1.json", function (json){
-        // 	us = json;
-        // 	console.log(us);
-        // });
-
-        var projection = d3.geoAlbersUsa()
-            .translate([width /2 , height / 2])
-            .scale(width/1.2);
-            // .scale([500]);
-
-        var path = d3.geoPath().projection(projection);
-
-        var g = svg.append("g")
-            .attr('class', 'center-container center-items us-state')
-            .attr('transform', 'translate('+margin.left+','+margin.top+')')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom)
-
-        function DrawMap(us) {
-        	console.log(us);
-			
-			data = state_all
-        	data_label = "Median Home Price: "
-
-        	data1 = county_all
-       		
-       		var lowColor = '#98f692'//'#f9f9f9'
-			var highColor = '#bc2a66'//'#bc2a66'
-			var keys = Object.keys(data);
-			var norm = 0.8;
-			var minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ));
-			var maxVal = Math.max.apply(null, keys.map(function(x) { return data[x]} ));
-			var ramp = d3.scaleLinear().domain([minVal,maxVal*norm]).range([lowColor,highColor])
-
-			// add a legend
-			var w = width/10, h = height/2;
-
-			var key = d3.select("g")
-				.append("svg")
-				.attr("width", w)
-				.attr("height", h)
-				.attr("class", "legend");
-
-			var legend = key.append("defs")
-				.append("svg:linearGradient")
-				.attr("id", "gradient")
-				.attr("x1", "100%")
-				.attr("y1", "0%")
-				.attr("x2", "100%")
-				.attr("y2", "100%")
-				.attr("spreadMethod", "pad");
-
-			legend.append("stop")
-				.attr("offset", "0%")
-				.attr("stop-color", highColor)
-				.attr("stop-opacity", 1);
-				
-			legend.append("stop")
-				.attr("offset", "100%")
-				.attr("stop-color", lowColor)
-				.attr("stop-opacity", 1);
-
-			key.append("rect")
-				.attr("width", w/4)
-				.attr("height", h)
-				.style("fill", "url(#gradient)")
-				.attr("transform", "translate(0,10)");
-
-			var y = d3.scaleLinear()
-				.range([h, 0])
-				.domain([minVal, maxVal]);
-
-			var yAxis = d3.axisRight(y);
-
-			key.append("g")
-				.attr("class", "y axis")
-				.attr("transform", "translate(" + w/3.5 + "," + 10 + ")")
-				.call(yAxis)
-
-      		g.append("g")
-                .attr("id", "counties")
-                .selectAll("path")
-                .data(topojson.feature(us, us.objects.counties).features)
-                .enter().append("path")
-                .attr("d", path)
-                .attr("class", "county-boundary")
-                .style("fill", function(d){return ramp(data1[d.id])})
-                .on("click", reset)
-                .on("mouseover", function(d){
-                	tooltip.transition()
-                	.duration(900)
-                	.style("opacity", 0.8);
-                	tooltip.html(d.properties.name + "<br/>" + data_label + data1[d.id]) 
-                	.style("left", (d3.event.pageX) + "px")
-                	.style("top", (d3.event.pageY - 28) + "px");
-                })
-                .on("mouseout", function(d){
-                	tooltip.transition()
-                	.duration(500)
-                	.style("opacity", 0);
-                });
-
-            g.append("g")
-                .attr("id", "states")
-                .selectAll("path")
-                .data(topojson.feature(us, us.objects.states).features)
-                .enter().append("path")
-                .attr("d", path)
-                .attr("class", "state")
-                // .style("fill", function(d){return ramp(data[d.properties.name])})
-                .on("click", clicked)
-                .on("mouseover", function(d){
-                	tooltip.transition()
-                	.duration(900)
-                	.style("opacity", 0.8);
-                	tooltip.html(d.properties.name + "<br/>" + data_label + data[d.properties.name])
-                	.style("left", (d3.event.pageX) + "px")
-                	.style("top", (d3.event.pageY - 28) + "px");
-                })
-                .on("mouseout", function(d){
-                	tooltip.transition()
-                	.duration(500)
-                	.style("opacity", 0);
-                });
-                            
-            g.selectAll(".state").transition()
-            	.style("fill", function(d){return ramp(data[d.properties.name])})
-            	.duration(2000);
-
-            g.append("path")
-                .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-                .attr("id", "state-borders")
-                .attr("d", path);
-
-      		d3.select("#inds")
-      			.on("change", function(){
-      				var selection = document.getElementById("inds");
-      				var selected = selection.options[selection.selectedIndex].value
-      				if (selected == "all") {
-      					data = state_all
-      					data1 = county_all
-      					data_label = "Median Home Price: "
-      				} else if (selected == "1bed") {
-      					data = state_1bed
-      					data1 = county_1bed
-      					data_label = "1Bed Home Price: "
-      				} else if (selected == "2bed") {
-      					data = state_2bed
-      					data1 = county_2bed
-      					data_label = "2Bed Home Price: "
-      				} else if (selected == "3bed") {
-      					data = state_3bed
-      					data1 = county_3bed
-      					data_label = "3Bed Home Price: "
-      				} else if (selected == "4bed") {
-      					data = state_4bed
-      					data1 = county_4bed
-      					data_label = "4Bed Home Price: "
-      				} else if (selected == "5bed") {
-      					data = state_5bed
-      					data1 = county_5bed
-      					data_label = "5Bed+ Home Price: "
-      				} else if (selected == "sqft") {
-      					data = state_sqft
-      					data1 = county_sqft
-      					data_label = "Home Price by Sqft: "
-      				}
-      				keys = Object.keys(data);
-					minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ));
-					maxVal = Math.max.apply(null, keys.map(function(x) { return data[x]} ));
-					ramp = d3.scaleLinear().domain([minVal,maxVal*norm]).range([lowColor,highColor])
-      				UpdateMap(data, data1);
-
-      			})
-
-
-      		d3.csv("{% static "1000-largest-us-cities.csv" %}").then(function(cities){
-      			console.log(cities)
-      			g.selectAll("circle")
-      				.data(cities)
-      				.enter()
-      				.append('circle')
-      				.attr("transform", function(d){
-      					return 'translate('+ projection([d.longitude, d.latitude])+')';
-      				})
-      				.attr("class", "city")
-      				// .attr("cx", function(d){
-      				// 	return projection([d.longitude, d.latitude])[0];
-      				// })
-      				// .attr("cy", function(d){
-      				// 	return projection([d.longitude, d.latitude])[1];
-      				// })
-      				.attr("r", function(d){
-      					return Math.sqrt(parseInt(d.Population) * 0.00004);
-      				})
-      				.style("fill", "yellow")
-      				.style("stroke", "gray")
-      				.style("stroke-width", 0.25)
-      				.style("opacity", 0.5)
-      				.append("title")
-      				.text(function(d){
-      					return d.name + "\nPopulation: " + d.Population;
-      				});
-      		});
-
-
-        	function UpdateMap(data, data1) {
-
-	            g.selectAll(".county-boundary").transition()
-	            	.style("fill", function(d){return ramp(data1[d.id])})
-	            	.duration(1000);
-
-	            g.selectAll(".state").transition()
-	                .style("fill", function(d){return ramp(data[d.properties.name])})
-	                .duration(1000);
-	                            
-	            // g.append("path")
-	            //     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-	            //     .attr("id", "state-borders")
-	            //     .attr("d", path);
-
-	            // update legend
-				y = d3.scaleLinear()
-					.range([h, 0])
-					.domain([minVal, maxVal]);
-
-				yAxis = d3.axisRight(y);
-
-				// key.select("g")
-				// 	.attr("class", "y axis")
-				// 	.attr("transform", "translate(41,10)")
-				// 	.call(yAxis)
-				key.select("g")
-					.call(yAxis)
-
-			}
-
-        }
-
-        function clicked(d) {
-            if (d3.select('.background').node() === this) return reset();
-
-            if (active.node() === this) return reset();
-
-            active.classed("active", false);
-            active = d3.select(this).classed("active", true);
-
-            var bounds = path.bounds(d),
-                dx = bounds[1][0] - bounds[0][0],
-                dy = bounds[1][1] - bounds[0][1],
-                x = (bounds[0][0] + bounds[1][0]) / 2,
-                y = (bounds[0][1] + bounds[1][1]) / 2,
-                scale = .9 / Math.max(dx / width, dy / height),
-                translate = [width / 2 - scale * x, height / 2 - scale * y];
-
-            g.transition()
-                .duration(500)
-                .style("stroke-width", 1.5 / scale + "px")
-                .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-
-            // g.selectAll(".city")
-            // 	.attr("r", 1)
-        }
-
-
-        function reset() {
-            active.classed("active", false);
-            active = d3.select(null);
-
-            g.transition()
-                // .delay(100)
-                .duration(500)
-                .style("stroke-width", "1.5px")
-                .attr('transform', 'translate('+margin.left+','+margin.top+')');
-
-            // g.selectAll(".city")
-            // 	.attr("r", 5)
-
-        }
-    </script>
 </body>
 </html>

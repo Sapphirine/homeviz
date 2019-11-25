@@ -89,7 +89,7 @@ def home(request):
     for cat in county_col_label:
         data[cat] = df2.set_index("id")[cat].dropna().to_dict()
 
-    return render(request, 'home.html', data)
+    return render(request, 'home.html', {"data": data})
 
 def test(request):
     data = {}
