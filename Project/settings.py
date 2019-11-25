@@ -156,5 +156,7 @@ STATICFILES_FINDERS = (
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/opt/bitnami/apps/django/django_projects/Project/Project/static/'
+
 print ("base dir path", BASE_DIR)
 # print ("static root", STATIC_ROOT)
