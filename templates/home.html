@@ -318,7 +318,7 @@
       			})
 
 
-      		d3.csv("/static/top_50_cities.csv").then(function(cities){
+      		d3.csv("{% static "top_50_cities.csv" %}").then(function(cities){
       			console.log(cities)
       			g.selectAll("circle")
       				.data(cities)
