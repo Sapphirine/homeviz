@@ -318,7 +318,7 @@
       			})
 
 
-      		d3.csv("{% static "top_50_cities.csv" %}").then(function(cities){
+      		d3.csv("{% static "1000-largest-us-cities.csv" %}").then(function(cities){
       			console.log(cities)
       			g.selectAll("circle")
       				.data(cities)
@@ -334,14 +334,16 @@
       				// .attr("cy", function(d){
       				// 	return projection([d.longitude, d.latitude])[1];
       				// })
-      				.attr("r", 5)
+      				.attr("r", function(d){
+      					return Math.sqrt(parseInt(d.Population) * 0.00004);
+      				})
       				.style("fill", "yellow")
       				.style("stroke", "gray")
       				.style("stroke-width", 0.25)
       				.style("opacity", 0.5)
       				.append("title")
       				.text(function(d){
-      					return d.name;
+      					return d.name + "\nPopulation: " + d.Population;
       				});
       		});
 
@@ -400,8 +402,8 @@
                 .style("stroke-width", 1.5 / scale + "px")
                 .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
 
-            g.selectAll(".city")
-            	.attr("r", 1)
+            // g.selectAll(".city")
+            // 	.attr("r", 1)
         }
 
 
@@ -415,8 +417,8 @@
                 .style("stroke-width", "1.5px")
                 .attr('transform', 'translate('+margin.left+','+margin.top+')');
 
-            g.selectAll(".city")
-            	.attr("r", 5)
+            // g.selectAll(".city")
+            // 	.attr("r", 5)
 
         }
     </script>
