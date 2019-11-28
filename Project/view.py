@@ -6,6 +6,9 @@ import logging
 import sys
 import os
 import pandas as pd
+# from django.contrib.staticfiles.templatetags.staticfiles import static
+# from django.contrib.staticfiles.storage import staticfiles_storage
+from django.contrib.staticfiles.finders import find
 
 logger = logging.getLogger(__name__)
 
@@ -76,15 +79,35 @@ def home(request):
     # df8.to_pickle("./static/df8,pkl")
     # df9.to_pickle("./static/df9,pkl")
 
-    df1 = pd.read_pickle("./static/df1.pkl")
-    df2 = pd.read_pickle("./static/df2.pkl")
-    df3 = pd.read_pickle("./static/df3.pkl")
-    df4 = pd.read_pickle("./static/df4.pkl")
-    df5 = pd.read_pickle("./static/df5.pkl")
-    df6 = pd.read_pickle("./static/df6.pkl")
-    df7 = pd.read_pickle("./static/df7.pkl")
-    df8 = pd.read_pickle("./static/df8.pkl")
-    df9 = pd.read_pickle("./static/df9.pkl")
+    # df1 = pd.read_pickle("./static/df1.pkl")
+    # df2 = pd.read_pickle("./static/df2.pkl")
+    # df3 = pd.read_pickle("./static/df3.pkl")
+    # df4 = pd.read_pickle("./static/df4.pkl")
+    # df5 = pd.read_pickle("./static/df5.pkl")
+    # df6 = pd.read_pickle("./static/df6.pkl")
+    # df7 = pd.read_pickle("./static/df7.pkl")
+    # df8 = pd.read_pickle("./static/df8.pkl")
+    # df9 = pd.read_pickle("./static/df9.pkl")
+
+    # df1 = pd.read_pickle(static("df1.pkl"))
+    # df2 = pd.read_pickle(static("df2.pkl"))
+    # df3 = pd.read_pickle(static("df3.pkl"))
+    # df4 = pd.read_pickle(static("df4.pkl"))
+    # df5 = pd.read_pickle(static("df5.pkl"))
+    # df6 = pd.read_pickle(static("df6.pkl"))
+    # df7 = pd.read_pickle(static("df7.pkl"))
+    # df8 = pd.read_pickle(static("df8.pkl"))
+    # df9 = pd.read_pickle(static("df9.pkl"))
+
+    df1 = pd.read_pickle(find("df1.pkl"))
+    df2 = pd.read_pickle(find("df2.pkl"))
+    df3 = pd.read_pickle(find("df3.pkl"))
+    df4 = pd.read_pickle(find("df4.pkl"))
+    df5 = pd.read_pickle(find("df5.pkl"))
+    df6 = pd.read_pickle(find("df6.pkl"))
+    df7 = pd.read_pickle(find("df7.pkl"))
+    df8 = pd.read_pickle(find("df8.pkl"))
+    df9 = pd.read_pickle(find("df9.pkl"))
 
     state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
                 "state_4bed", "state_5bed", "state_sqft"]
