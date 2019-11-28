@@ -1,0 +1,85 @@
+.background {
+    fill: none;
+    pointer-events: all;
+}
+
+#states {
+    fill: #aaa;
+}
+
+#states .active {
+    display:none;
+}
+
+#dropdown{
+    position:absolute;
+}
+
+.select-style {
+    border: 1px solid #ccc;
+    /*width: 120px;*/
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+#state-borders {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    pointer-events: none;
+}
+
+.county-boundary {
+    fill: #aaa;
+    stroke: #fff;
+    stroke-width: .5px;
+}
+
+.county-boundary:hover, .state:hover {
+    fill: orange;
+}
+
+.tooltip { 
+    position: absolute;     
+    text-align: center;     
+    width: 200px;          
+    height: 100px;         
+    padding: 5px 0;       
+    font: 12px sans-serif;    
+    background: #fff; 
+    border: 2px solid black;        
+    pointer-events: none;     
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

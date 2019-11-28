@@ -62,6 +62,9 @@ def home(request):
     SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
     df2 = pandas_gbq.read_gbq(SQL2)
     
+    SQL3 = "SELECT * FROM HomeViz.home_value_byState_all"
+    df3 = pandas_gbq.read_gbq(SQL3)
+
     # Convert id column (state + county code) to string and add leading zeros 
     # (to match TOPOJSON id format)
     df2['id'] = df2['id'].astype(str)
@@ -83,13 +86,20 @@ def home(request):
     # data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
     # data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
 
+    # Consolidated data for heat map (state)
     for cat in state_col_label:
         data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
 
+    # Consolidated data for heat map (county)
     for cat in county_col_label:
         data[cat] = df2.set_index("id")[cat].dropna().to_dict()
 
-    return render(request, 'home.html', {"data": data})
+    # Historical home value data for plots (state, all)
+    # Reformat df to dict
+    # Format: {state -> {column -> value}}
+    data_state_all = df3.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").dropna().to_dict(orient='index')
+
+    return render(request, 'home.html', {"data": data, "hist": data_state_all})
 
 def test(request):
     data = {}
