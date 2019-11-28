@@ -52,7 +52,7 @@ d3.select("#dropdown")
     .style("left", width * 0.8 + "px");
 
 // Load counties data
-d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json').then(DrawMap);
+Promise.resolve(d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json')).then(DrawMap);
 
 // Set projection
 var projection = d3.geoAlbersUsa()
