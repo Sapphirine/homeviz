@@ -76,6 +76,7 @@ function DrawMap(us) {
   	data = data_all['state_all']
   	data_label = "Median Home Price: "
   	data1 = data_all['county_all']
+    hist = hist_all['state_all']
          		
   	var lowColor = '#98f692'//'#f9f9f9'
   	var highColor = '#bc2a66'//'#bc2a66'
@@ -205,6 +206,7 @@ function DrawMap(us) {
             data = data_all["state_" + selected]
             data1 = data_all["county_" + selected]
             data_label = display[selected]
+            hist = hist_all["state_" + selected]
 
           	keys = Object.keys(data)
           	minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ))
@@ -309,9 +311,9 @@ function reset() {
 //Historical data of a single state as input
 function line_plot(hist){
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    var margin = {top: 10, right: 40, bottom: 20, left: 50},
         width = 200 - margin.left - margin.right,
-        height = 70 - margin.top - margin.bottom;
+        height = 80 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     var svg = d3.select(".tooltip")
@@ -327,7 +329,7 @@ function line_plot(hist){
         return { date : d3.timeParse("%Y_%m")(d.key.slice(1,8)), value : d.value }
     })
         // Add X axis --> it is a date format
-    console.log(hist)
+    // console.log(hist)
     var x = d3.scaleTime()
       .domain(d3.extent(hist, function(d) { return d3.timeParse("%Y_%m")(d.key.slice(1,8)); }))
       .range([ 0, width ]);
@@ -364,7 +366,7 @@ function line_plot(hist){
       .attr("stroke-dasharray", totalLength + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
       .transition()
-          .duration(2000)
+          .duration(1000)
           .attr("stroke-dashoffset", 0)
           .style("stroke-width",3)
 

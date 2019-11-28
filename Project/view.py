@@ -5,6 +5,7 @@ from google.oauth2 import service_account
 import logging
 import sys
 import os
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -41,34 +42,49 @@ def home(request):
     pandas_gbq.context.credentials = credentials
     pandas_gbq.context.project = "bigdata-253023"
 
-    # SQL1 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_all"
+    # SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
     # df1 = pandas_gbq.read_gbq(SQL1)
-    # SQL2 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_1bed"
+    # SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
     # df2 = pandas_gbq.read_gbq(SQL2)
-    # SQL3 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_2bed"
-    # df3= pandas_gbq.read_gbq(SQL3)
-    # SQL4 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_3bed"
+    # SQL3 = "SELECT * FROM HomeViz.home_value_byState_all"
+    # df3 = pandas_gbq.read_gbq(SQL3)
+    # SQL4 = "SELECT * FROM HomeViz.home_value_byState_1bed"
     # df4 = pandas_gbq.read_gbq(SQL4)
-    # SQL5 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_4bed"
-    # df5 = pandas_gbq.read_gbq(SQL5)
-    # SQL6 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_5bedOrMore"
+    # SQL5 = "SELECT * FROM HomeViz.home_value_byState_2bed"
+    # df5= pandas_gbq.read_gbq(SQL5)
+    # SQL6 = "SELECT * FROM HomeViz.home_value_byState_3bed"
     # df6 = pandas_gbq.read_gbq(SQL6)
-    # SQL7 = "SELECT RegionName, _2019_09 FROM HomeViz.home_value_byState_medianPerSqft"
+    # SQL7 = "SELECT * FROM HomeViz.home_value_byState_4bed"
     # df7 = pandas_gbq.read_gbq(SQL7)
+    # SQL8 = "SELECT * FROM HomeViz.home_value_byState_5bedOrMore"
+    # df8 = pandas_gbq.read_gbq(SQL8)
+    # SQL9 = "SELECT * FROM HomeViz.home_value_byState_medianPerSqft"
+    # df9 = pandas_gbq.read_gbq(SQL9)
 
-    SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
-    df1 = pandas_gbq.read_gbq(SQL1)
+    # # Convert id column (state + county code) to string and add leading zeros 
+    # # (to match TOPOJSON id format)
+    # df2['id'] = df2['id'].astype(str)
+    # df2['id'] = df2['id'].apply(lambda x: x.zfill(5))
 
-    SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
-    df2 = pandas_gbq.read_gbq(SQL2)
-    
-    SQL3 = "SELECT * FROM HomeViz.home_value_byState_all"
-    df3 = pandas_gbq.read_gbq(SQL3)
+    # df1.to_pickle("./static/df1,pkl")
+    # df2.to_pickle("./static/df2,pkl")
+    # df3.to_pickle("./static/df3,pkl")
+    # df4.to_pickle("./static/df4,pkl")
+    # df5.to_pickle("./static/df5,pkl")
+    # df6.to_pickle("./static/df6,pkl")
+    # df7.to_pickle("./static/df7,pkl")
+    # df8.to_pickle("./static/df8,pkl")
+    # df9.to_pickle("./static/df9,pkl")
 
-    # Convert id column (state + county code) to string and add leading zeros 
-    # (to match TOPOJSON id format)
-    df2['id'] = df2['id'].astype(str)
-    df2['id'] = df2['id'].apply(lambda x: x.zfill(5))
+    df1 = pd.read_pickle("./static/df1.pkl")
+    df2 = pd.read_pickle("./static/df2.pkl")
+    df3 = pd.read_pickle("./static/df3.pkl")
+    df4 = pd.read_pickle("./static/df4.pkl")
+    df5 = pd.read_pickle("./static/df5.pkl")
+    df6 = pd.read_pickle("./static/df6.pkl")
+    df7 = pd.read_pickle("./static/df7.pkl")
+    df8 = pd.read_pickle("./static/df8.pkl")
+    df9 = pd.read_pickle("./static/df9.pkl")
 
     state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
                 "state_4bed", "state_5bed", "state_sqft"]
@@ -77,14 +93,6 @@ def home(request):
                 "county_4bed", "county_5bed", "county_sqft"]
 
     data = {}
-    # data["state_all"] = df1.to_dict(orient='record')
-    # data["state_all"] =  df1.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_1bed"] =  df2.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_2bed"] =  df3.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_3bed"] =  df4.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_4bed"] =  df5.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_5bed"] =  df6.set_index("RegionName")['_2019_09'].to_dict()
-    # data["state_sqft"] =  df7.set_index("RegionName")['_2019_09'].to_dict()
 
     # Consolidated data for heat map (state)
     for cat in state_col_label:
@@ -97,9 +105,16 @@ def home(request):
     # Historical home value data for plots (state, all)
     # Reformat df to dict
     # Format: {state -> {column -> value}}
-    data_state_all = df3.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").dropna().to_dict(orient='index')
+    data_state_all = df3.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
 
-    return render(request, 'home.html', {"data": data, "hist": data_state_all})
+    # Get all state historical data
+    hist = {}
+    dfs = [df3, df4, df5, df6, df7, df8, df9]
+
+    for i, cat in enumerate(state_col_label):
+        hist[cat] = dfs[i].drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+
+    return render(request, 'home.html', {"data": data, "hist": hist})
 
 def test(request):
     data = {}

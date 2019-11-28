@@ -22,9 +22,9 @@
   <script src="{% static "js/home.js" %}"></script>
   <script>
       var data_all = {{ data | safe }}
-      var hist = {{ hist | safe }}
+      var hist_all = {{ hist | safe }}
       console.log(data_all)
-      console.log(hist)
+      console.log(hist_all)
       // line_plot(hist)
   </script>
 
