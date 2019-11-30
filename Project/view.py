@@ -6,6 +6,7 @@ import logging
 import sys
 import os
 import pandas as pd
+import pickle
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 # from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.staticfiles.finders import find
@@ -45,6 +46,43 @@ def home(request):
     pandas_gbq.context.credentials = credentials
     pandas_gbq.context.project = "bigdata-253023"
 
+    state_table_prefix = "home_value_byState_"
+    county_table_prefix = "home_value_byCounty_"
+    tables = ["all", "1bed", "2bed", "3bed", "4bed", "5bedOrMore", "medianPerSqft",
+            "singleFamily", "condo", "topTier", "bottomTier"]
+
+    # state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
+    #             "state_4bed", "state_5bed", "state_sqft"]
+    # county_col_label = ["county_all", "county_1bed", "county_2bed", "county_3bed",
+    #             "county_4bed", "county_5bed", "county_sqft"]
+
+
+    # # Save last latest data for heatmap
+    # data = {}
+    # hist = {}
+    # for table in tables:
+    #     # State data
+    #     SQL = "SELECT * FROM HomeViz.home_value_byState_" + table
+    #     df = pandas_gbq.read_gbq(SQL)
+    #     data["state_" + table] = df.set_index('RegionName').iloc[:,-1].rename("state_" + table).dropna().to_dict()
+    #     hist["state_" + table] = df.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+        
+    #     # County data
+    #     SQL = "SELECT * FROM HomeViz.home_value_byCounty_" + table
+    #     df = pandas_gbq.read_gbq(SQL)
+    #     # Create new column "id" by concatenating "StateCodeFIPS" and "MunicipalCodeFIPS" columns
+    #     df["StateCodeFIPS"] = df["StateCodeFIPS"].astype(str).apply(lambda x: x.zfill(2))
+    #     df["MunicipalCodeFIPS"] = df["MunicipalCodeFIPS"].astype(str).apply(lambda x: x.zfill(3))
+    #     df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
+    #     data["county_" + table] = df.set_index('id').iloc[:,-2].rename("county_" + table).dropna().to_dict()
+    #     hist["county_" + table] = df.drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
+
+    # # Cache files
+    # with open("./static/data.pkl", "wb") as handle:
+    #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    # with open("./static/hist.pkl", "wb") as handle:
+    #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
+ 
     # SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
     # df1 = pandas_gbq.read_gbq(SQL1)
     # SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
@@ -63,11 +101,31 @@ def home(request):
     # df8 = pandas_gbq.read_gbq(SQL8)
     # SQL9 = "SELECT * FROM HomeViz.home_value_byState_medianPerSqft"
     # df9 = pandas_gbq.read_gbq(SQL9)
+    # SQL10 = "SELECT * FROM HomeViz.home_value_byCounty_all"
+    # df10 = pandas_gbq.read_gbq(SQL10)
+    # SQL11 = "SELECT * FROM HomeViz.home_value_byCounty_1bed"
+    # df11 = pandas_gbq.read_gbq(SQL11)
+    # SQL12 = "SELECT * FROM HomeViz.home_value_byCounty_2bed"
+    # df12= pandas_gbq.read_gbq(SQL12)
+    # SQL13 = "SELECT * FROM HomeViz.home_value_byCounty_3bed"
+    # df13 = pandas_gbq.read_gbq(SQL13)
+    # SQL14 = "SELECT * FROM HomeViz.home_value_byCounty_4bed"
+    # df14 = pandas_gbq.read_gbq(SQL14)
+    # SQL15 = "SELECT * FROM HomeViz.home_value_byCounty_5bedOrMore"
+    # df15 = pandas_gbq.read_gbq(SQL15)
+    # SQL16 = "SELECT * FROM HomeViz.home_value_byCounty_medianPerSqft"
+    # df16 = pandas_gbq.read_gbq(SQL16)
 
     # # Convert id column (state + county code) to string and add leading zeros 
     # # (to match TOPOJSON id format)
     # df2['id'] = df2['id'].astype(str)
     # df2['id'] = df2['id'].apply(lambda x: x.zfill(5))
+
+    # # Create new column "id" by concatenating "StateCodeFIPS" and "MunicipalCodeFIPS" columns
+    # for df in county_dfs:
+    #     df["StateCodeFIPS"] = df["StateCodeFIPS"].astype(str).apply(lambda x: x.zfill(2))
+    #     df["MunicipalCodeFIPS"] = df["MunicipalCodeFIPS"].astype(str).apply(lambda x: x.zfill(3))
+    #     df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
 
     # df1.to_pickle("./static/df1,pkl")
     # df2.to_pickle("./static/df2,pkl")
@@ -78,16 +136,13 @@ def home(request):
     # df7.to_pickle("./static/df7,pkl")
     # df8.to_pickle("./static/df8,pkl")
     # df9.to_pickle("./static/df9,pkl")
-
-    # df1 = pd.read_pickle("./static/df1.pkl")
-    # df2 = pd.read_pickle("./static/df2.pkl")
-    # df3 = pd.read_pickle("./static/df3.pkl")
-    # df4 = pd.read_pickle("./static/df4.pkl")
-    # df5 = pd.read_pickle("./static/df5.pkl")
-    # df6 = pd.read_pickle("./static/df6.pkl")
-    # df7 = pd.read_pickle("./static/df7.pkl")
-    # df8 = pd.read_pickle("./static/df8.pkl")
-    # df9 = pd.read_pickle("./static/df9.pkl")
+    # df10.to_pickle("./static/df10.pkl")
+    # df11.to_pickle("./static/df11.pkl")
+    # df12.to_pickle("./static/df12.pkl")
+    # df13.to_pickle("./static/df13.pkl")
+    # df14.to_pickle("./static/df14.pkl")
+    # df15.to_pickle("./static/df15.pkl")
+    # df16.to_pickle("./static/df16.pkl")
 
     # df1 = pd.read_pickle(static("df1.pkl"))
     # df2 = pd.read_pickle(static("df2.pkl"))
@@ -98,44 +153,60 @@ def home(request):
     # df7 = pd.read_pickle(static("df7.pkl"))
     # df8 = pd.read_pickle(static("df8.pkl"))
     # df9 = pd.read_pickle(static("df9.pkl"))
+    # df10.to_pickle("./static/df10.pkl")
+    # df11.to_pickle("./static/df11.pkl")
+    # df12.to_pickle("./static/df12.pkl")
+    # df13.to_pickle("./static/df13.pkl")
+    # df14.to_pickle("./static/df14.pkl")
+    # df15.to_pickle("./static/df15.pkl")
+    # df16.to_pickle("./static/df16.pkl")
 
-    df1 = pd.read_pickle(find("df1.pkl"))
-    df2 = pd.read_pickle(find("df2.pkl"))
-    df3 = pd.read_pickle(find("df3.pkl"))
-    df4 = pd.read_pickle(find("df4.pkl"))
-    df5 = pd.read_pickle(find("df5.pkl"))
-    df6 = pd.read_pickle(find("df6.pkl"))
-    df7 = pd.read_pickle(find("df7.pkl"))
-    df8 = pd.read_pickle(find("df8.pkl"))
-    df9 = pd.read_pickle(find("df9.pkl"))
+    # df1 = pd.read_pickle(find("df1.pkl"))
+    # df2 = pd.read_pickle(find("df2.pkl"))
+    # df3 = pd.read_pickle(find("df3.pkl"))
+    # df4 = pd.read_pickle(find("df4.pkl"))
+    # df5 = pd.read_pickle(find("df5.pkl"))
+    # df6 = pd.read_pickle(find("df6.pkl"))
+    # df7 = pd.read_pickle(find("df7.pkl"))
+    # df8 = pd.read_pickle(find("df8.pkl"))
+    # df9 = pd.read_pickle(find("df9.pkl"))
+    # df10 = pd.read_pickle(find("df10.pkl"))
+    # df11 = pd.read_pickle(find("df11.pkl"))
+    # df12 = pd.read_pickle(find("df12.pkl"))
+    # df13 = pd.read_pickle(find("df13.pkl"))
+    # df14 = pd.read_pickle(find("df14.pkl"))
+    # df15 = pd.read_pickle(find("df15.pkl"))
+    # df16 = pd.read_pickle(find("df16.pkl"))
 
-    state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
-                "state_4bed", "state_5bed", "state_sqft"]
+    # state_dfs = [df3, df4, df5, df6, df7, df8, df9]
+    # county_dfs = [df10, df11, df12, df13, df14, df15, df16]
 
-    county_col_label = ["county_all", "county_1bed", "county_2bed", "county_3bed",
-                "county_4bed", "county_5bed", "county_sqft"]
+    # data = {}
 
-    data = {}
+    # # Consolidated data for heat map (state)
+    # for cat in state_col_label:
+    #     data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
 
-    # Consolidated data for heat map (state)
-    for cat in state_col_label:
-        data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
+    # # Consolidated data for heat map (county)
+    # for cat in county_col_label:
+    #     data[cat] = df2.set_index("id")[cat].dropna().to_dict()
 
-    # Consolidated data for heat map (county)
-    for cat in county_col_label:
-        data[cat] = df2.set_index("id")[cat].dropna().to_dict()
+    # # Historical home value data for plots (state, all)
+    # # Reformat df to dict
+    # # Format: {category --> {state/county -> {column -> value}}}
+    # hist = {}
+    # for i, cat in enumerate(state_col_label):
+    #     hist[cat] = state_dfs[i].drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
 
-    # Historical home value data for plots (state, all)
-    # Reformat df to dict
-    # Format: {state -> {column -> value}}
-    data_state_all = df3.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+    # for i, cat in enumerate(county_col_label):
+    #     hist[cat] = county_dfs[i].drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
 
-    # Get all state historical data
-    hist = {}
-    dfs = [df3, df4, df5, df6, df7, df8, df9]
 
-    for i, cat in enumerate(state_col_label):
-        hist[cat] = dfs[i].drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+    # Retrieve Cache files
+    with open(find("data.pkl"), "rb") as handle:
+        data = pickle.load(handle)
+    with open(find("hist.pkl"), "rb") as handle:
+        hist = pickle.load(handle)
 
     return render(request, 'home.html', {"data": data, "hist": hist})
 

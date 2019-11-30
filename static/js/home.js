@@ -29,8 +29,9 @@ function home(data_all, hist_all){
 
     // Add dropbox
     var categories = {"all": "All", "1bed": "1 Bedroom", "2bed": "2 Bedrooms", 
-                    "3bed": "3 Bedrooms", "4bed": "4 Bedrooms", "5bed": "5 Bedrooms+",
-                    "sqft": "Median by Sqft"};
+                    "3bed": "3 Bedrooms", "4bed": "4 Bedrooms", "5bedOrMore": "5 Bedrooms+",
+                    "medianPerSqft": "Median Per Sqft", "singleFamily": "Single Family", 
+                    "condo": "Condos/Co-op", "topTier": "Top Tier", "bottomTier": "Bottom Tier"};
     categories = d3.entries(categories)
 
     var menu = d3.select("#menu")
@@ -77,6 +78,8 @@ function home(data_all, hist_all){
       	data_label = "Median Home Price: "
       	data1 = data_all['county_all']
         hist = hist_all['state_all']
+        hist1 = hist_all['county_all']
+        // console.log(hist)
              		
       	var lowColor = '#98f692'//'#f9f9f9'
       	var highColor = '#bc2a66'//'#bc2a66'
@@ -141,6 +144,7 @@ function home(data_all, hist_all){
                 tooltip.html(d.properties.name + "<br/>" + data_label + data1[d.id]) 
                   	.style("left", (d3.event.pageX) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
+                line_plot(hist1[d.id])
             })
             .on("mouseout", function(d){
                 d3.select(this).style('fill-opacity', 1);
@@ -187,9 +191,11 @@ function home(data_all, hist_all){
             .attr("id", "state-borders")
             .attr("d", path);
 
-        var picklist = ['all', '1bed', '2bed', '3bed', '4bed', '5bed', 'sqft'];
+        var picklist = ['all', '1bed', '2bed', '3bed', '4bed', '5bedOrMore', 'medianPerSqft', 'singleFamily', 
+                        'condo', 'topTier', 'bottomTier'];
         var caption = ['Median Home Price: ', '1Bed Home Price: ', '2Bed Home Price: ', '3Bed Home Price: ', 
-                      '4Bed Home Price: ', '5Bed+ Home Price: ', 'Home Price by Sqft: '];
+                      '4Bed Home Price: ', '5Bed+ Home Price: ', 'Home Price Per Sqft: ', 'Single Family Home Price: ',
+                      'Condo/Co-op Home Price: ', 'Top Tier Home Price: ', 'Bottom Tier Home Price: '];
 
         var display = {};
         for (i = 0; i < picklist.length; i++){
@@ -207,6 +213,7 @@ function home(data_all, hist_all){
                 data1 = data_all["county_" + selected]
                 data_label = display[selected]
                 hist = hist_all["state_" + selected]
+                hist1 = hist_all["county_" + selected]
 
               	keys = Object.keys(data)
               	minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ))
@@ -285,7 +292,7 @@ function home(data_all, hist_all){
         g.selectAll(".city")
           	.style("fill", "black")
           	.style("stroke-width", 0.1)
-          	.attr("r", 5 / scale);
+          	.attr("r", 2 / scale);
     }
 
     //Reset map when clicked again
