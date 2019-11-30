@@ -114,21 +114,23 @@ def home(request):
     # with open("./static/hist.pkl", "wb") as handle:
     #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    income = {}
-
-    # Get income data
-    SQL = "SELECT FIPS, Area_name, Median_Household_income_2017 AS income, Unemployment_rate_2018 AS unemployment FROM HomeViz.income"
-    df = pandas_gbq.read_gbq(SQL)
-    df["FIPS"] = df["FIPS"].astype(str).apply(lambda x: x.zfill(5))
-    income['income'] = df.set_index('FIPS')['income'].dropna().to_dict()
-    income['unemployment'] = df.set_index('FIPS')['unemployment'].dropna().to_dict()
-
+    # income = {}
+    # # Get income data
+    # SQL = "SELECT FIPS, Area_name, Median_Household_income_2017 AS income, Unemployment_rate_2018 AS unemployment FROM HomeViz.income"
+    # df = pandas_gbq.read_gbq(SQL)
+    # df["FIPS"] = df["FIPS"].astype(str).apply(lambda x: x.zfill(5))
+    # income['income'] = df.set_index('FIPS')['income'].dropna().to_dict()
+    # income['unemployment'] = df.set_index('FIPS')['unemployment'].dropna().to_dict()
+    # with open("./static/income.pkl", "wb") as handle:
+    #     pickle.dump(income, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     # Retrieve Cache files
     with open(find("data.pkl"), "rb") as handle:
         data = pickle.load(handle)
     with open(find("hist.pkl"), "rb") as handle:
         hist = pickle.load(handle)
+    with open(find("income.pkl"), "rb") as handle:
+        income = pickle.load(handle)
 
     return render(request, 'home.html', {"data": data, "hist": hist, "income": income})
 
