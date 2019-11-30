@@ -62,7 +62,25 @@ def home(request):
     # Query and save data as dataframes
     data = {}
     hist = {}
+     # Query data from BigQuery and cache into pickles
+    for i, table in enumerate(tables):
+        # State data
+        SQL = "SELECT * FROM HomeViz.home_value_byState_" + table
+        df = pandas_gbq.read_gbq(SQL)
+        data["state_" + table] = df.set_index('RegionName').iloc[:,-1].rename("state_" + table).dropna().to_dict()
+        hist["state_" + table] = df.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+        
+        # County data
+        SQL = "SELECT * FROM HomeViz.home_value_byCounty_" + table
+        df = pandas_gbq.read_gbq(SQL)
+        # Create new column "id" by concatenating "StateCodeFIPS" and "MunicipalCodeFIPS" columns
+        df["StateCodeFIPS"] = df["StateCodeFIPS"].astype(str).apply(lambda x: x.zfill(2))
+        df["MunicipalCodeFIPS"] = df["MunicipalCodeFIPS"].astype(str).apply(lambda x: x.zfill(3))
+        df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
+        data["county_" + table] = df.set_index('id').iloc[:,-2].rename("county_" + table).dropna().to_dict()
+        hist["county_" + table] = df.drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
     
+
     # # Query data from BigQuery and cache into pickles
     # for i, table in enumerate(tables):
     #     # State data
@@ -233,11 +251,11 @@ def home(request):
     # with open(find("hist.txt"), "r") as handle:
     #     hist = json.load(handle)
 
-    # Dump for saving files
-    data_file = bz2.BZ2File(find('data.s'), 'r')
-    data = pickle.load(data_file)
-    hist_file = bz2.BZ2File(find('hist.s'), 'r')
-    hist = pickle.load(hist_file)
+    # # Dump for saving files
+    # data_file = bz2.BZ2File(find('data.s'), 'r')
+    # data = pickle.load(data_file)
+    # hist_file = bz2.BZ2File(find('hist.s'), 'r')
+    # hist = pickle.load(hist_file)
 
     return render(request, 'home.html', {"data": data, "hist": hist})
 
