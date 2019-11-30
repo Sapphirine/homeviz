@@ -59,9 +59,11 @@ function home(data_all, hist_all){
         .style("opacity", 0);
 
     // Add dropbox
-    var categories = {"all": "All", "1bed": "1 Bedroom", "2bed": "2 Bedrooms", 
-                    "3bed": "3 Bedrooms", "4bed": "4 Bedrooms", "5bedOrMore": "5 Bedrooms+",
-                    "medianPerSqft": "Median Per Sqft", "singleFamily": "Single Family", 
+    // var categories = {"all": "All", "1bed": "1 Bedroom", "2bed": "2 Bedrooms", 
+    //                 "3bed": "3 Bedrooms", "4bed": "4 Bedrooms", "5bedOrMore": "5 Bedrooms+",
+    //                 "medianPerSqft": "Median Per Sqft", "singleFamily": "Single Family", 
+    //                 "condo": "Condos/Co-op", "topTier": "Top Tier", "bottomTier": "Bottom Tier"};
+    var categories = {"all": "All", "singleFamily": "Single Family", 
                     "condo": "Condos/Co-op", "topTier": "Top Tier", "bottomTier": "Bottom Tier"};
     categories = d3.entries(categories)
 
@@ -222,10 +224,13 @@ function home(data_all, hist_all){
             .attr("id", "state-borders")
             .attr("d", path);
 
-        var picklist = ['all', '1bed', '2bed', '3bed', '4bed', '5bedOrMore', 'medianPerSqft', 'singleFamily', 
-                        'condo', 'topTier', 'bottomTier'];
-        var caption = ['Median Home Price: ', '1Bed Home Price: ', '2Bed Home Price: ', '3Bed Home Price: ', 
-                      '4Bed Home Price: ', '5Bed+ Home Price: ', 'Home Price Per Sqft: ', 'Single Family Home Price: ',
+        // var picklist = ['all', '1bed', '2bed', '3bed', '4bed', '5bedOrMore', 'medianPerSqft', 'singleFamily', 
+        //                 'condo', 'topTier', 'bottomTier'];
+        // var caption = ['Median Home Price: ', '1Bed Home Price: ', '2Bed Home Price: ', '3Bed Home Price: ', 
+        //               '4Bed Home Price: ', '5Bed+ Home Price: ', 'Home Price Per Sqft: ', 'Single Family Home Price: ',
+        //               'Condo/Co-op Home Price: ', 'Top Tier Home Price: ', 'Bottom Tier Home Price: '];
+        var picklist = ['all', 'singleFamily', 'condo', 'topTier', 'bottomTier'];
+        var caption = ['Median Home Price: ', 'Single Family Home Price: ',
                       'Condo/Co-op Home Price: ', 'Top Tier Home Price: ', 'Bottom Tier Home Price: '];
 
         var display = {};

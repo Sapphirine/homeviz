@@ -50,8 +50,10 @@ def home(request):
 
     state_table_prefix = "home_value_byState_"
     county_table_prefix = "home_value_byCounty_"
-    tables = ["all", "1bed", "2bed", "3bed", "4bed", "5bedOrMore", "medianPerSqft",
-            "singleFamily", "condo", "topTier", "bottomTier"]
+    # tables = ["all", "1bed", "2bed", "3bed", "4bed", "5bedOrMore", "medianPerSqft",
+    #         "singleFamily", "condo", "topTier", "bottomTier"]
+
+    tables = ["all", "singleFamily", "condo", "topTier", "bottomTier"]
 
     # state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
     #             "state_4bed", "state_5bed", "state_sqft"]
@@ -233,11 +235,11 @@ def home(request):
     # with open("./static/hist.pkl", "wb") as handle:
     #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    # # Retrieve Cache files
-    # with open(find("data.pkl"), "rb") as handle:
-    #     data = pickle.load(handle)
-    # with open(find("hist.pkl"), "rb") as handle:
-    #     hist = pickle.load(handle)
+    # Retrieve Cache files
+    with open(find("data.pkl"), "rb") as handle:
+        data = pickle.load(handle)
+    with open(find("hist.pkl"), "rb") as handle:
+        hist = pickle.load(handle)
 
     # # Cache JSON files
     # with open("./static/data.txt", "w") as handle:
@@ -245,11 +247,11 @@ def home(request):
     # with open("./static/hist.txt", "w") as handle:
     #     json.dump(hist, handle)
 
-    # Retrieve Cache JSON files
-    with open(find("data.txt"), "r") as handle:
-        data = json.load(handle)
-    with open(find("hist.txt"), "r") as handle:
-        hist = json.load(handle)
+    # # Retrieve Cache JSON files
+    # with open(find("data.txt"), "r") as handle:
+    #     data = json.load(handle)
+    # with open(find("hist.txt"), "r") as handle:
+    #     hist = json.load(handle)
 
     # # Dump for saving files
     # data_file = bz2.BZ2File(find('data.s'), 'r')
