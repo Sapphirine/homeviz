@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="#" />
     <title>HomeViz</title>
 </head>
 <link rel="stylesheet" href="{% static "css/home.css" %}">
@@ -24,8 +25,10 @@
   <script>
       var data_all = {{ data | safe }}
       var hist_all = {{ hist | safe }}
+      var income = {{ income | safe }}
       console.log(data_all)
       console.log(hist_all)
+      console.log(income)
       home(data_all, hist_all)
       // line_plot(hist)
   </script>

@@ -39,7 +39,10 @@ service_account_info = {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bigdata-admin%40bigdata-253023.iam.gserviceaccount.com"
 }
 
+# path = os.path.join(sys.path[0], "BigData-03aeb7de872c.json")
 credentials = service_account.Credentials.from_service_account_info(service_account_info)
+
+# credentials = service_account.Credentials.from_service_account_file(path)
 
 def home(request):
     pandas_gbq.context.credentials = credentials
@@ -51,6 +54,12 @@ def home(request):
     #         "singleFamily", "condo", "topTier", "bottomTier"]
 
     tables = ["all", "singleFamily", "condo", "topTier", "bottomTier"]
+
+    # state_col_label = ["state_all", "state_1bed", "state_2bed", "state_3bed",
+    #             "state_4bed", "state_5bed", "state_sqft"]
+    # county_col_label = ["county_all", "county_1bed", "county_2bed", "county_3bed",
+    #             "county_4bed", "county_5bed", "county_sqft"]
+
 
     # # Query and save data as dataframes
     # data = {}
@@ -73,6 +82,7 @@ def home(request):
     #     data["county_" + table] = df.set_index('id').iloc[:,-2].rename("county_" + table).dropna().to_dict()
     #     hist["county_" + table] = df.drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
     
+
     # # Query data from BigQuery and cache into pickles
     # for i, table in enumerate(tables):
     #     # State data
@@ -89,7 +99,118 @@ def home(request):
     #     df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
     #     df.to_pickle("./static/dfc{}.pkl".format(i))
         
+
+    # for i, table in enumerate(tables):
+    #     # State data
+    #     df = pd.read_pickle(find("dfs{}.pkl".format(i)))
+    #     data["state_" + table] = df.set_index('RegionName').iloc[:,-1].rename("state_" + table).dropna().to_dict()
+    #     hist["state_" + table] = df.drop(columns=['RegionID', 'SizeRank']).set_index("RegionName").fillna(0).to_dict(orient='index')
+        
+    #     # County data
+    #     df = pd.read_pickle(find("dfc{}.pkl".format(i)))
+    #     data["county_" + table] = df.set_index('id').iloc[:,-2].rename("county_" + table).dropna().to_dict()
+    #     hist["county_" + table] = df.drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
+ 
+    # SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
+    # df1 = pandas_gbq.read_gbq(SQL1)
+    # SQL2 = "SELECT * FROM HomeViz.home_value_byCounty_2019_09"
+    # df2 = pandas_gbq.read_gbq(SQL2)
+    # SQL3 = "SELECT * FROM HomeViz.home_value_byState_all"
+    # df3 = pandas_gbq.read_gbq(SQL3)
+    # SQL4 = "SELECT * FROM HomeViz.home_value_byState_1bed"
+    # df4 = pandas_gbq.read_gbq(SQL4)
+    # SQL5 = "SELECT * FROM HomeViz.home_value_byState_2bed"
+    # df5= pandas_gbq.read_gbq(SQL5)
+    # SQL6 = "SELECT * FROM HomeViz.home_value_byState_3bed"
+    # df6 = pandas_gbq.read_gbq(SQL6)
+    # SQL7 = "SELECT * FROM HomeViz.home_value_byState_4bed"
+    # df7 = pandas_gbq.read_gbq(SQL7)
+    # SQL8 = "SELECT * FROM HomeViz.home_value_byState_5bedOrMore"
+    # df8 = pandas_gbq.read_gbq(SQL8)
+    # SQL9 = "SELECT * FROM HomeViz.home_value_byState_medianPerSqft"
+    # df9 = pandas_gbq.read_gbq(SQL9)
+    # SQL10 = "SELECT * FROM HomeViz.home_value_byCounty_all"
+    # df10 = pandas_gbq.read_gbq(SQL10)
+    # SQL11 = "SELECT * FROM HomeViz.home_value_byCounty_1bed"
+    # df11 = pandas_gbq.read_gbq(SQL11)
+    # SQL12 = "SELECT * FROM HomeViz.home_value_byCounty_2bed"
+    # df12= pandas_gbq.read_gbq(SQL12)
+    # SQL13 = "SELECT * FROM HomeViz.home_value_byCounty_3bed"
+    # df13 = pandas_gbq.read_gbq(SQL13)
+    # SQL14 = "SELECT * FROM HomeViz.home_value_byCounty_4bed"
+    # df14 = pandas_gbq.read_gbq(SQL14)
+    # SQL15 = "SELECT * FROM HomeViz.home_value_byCounty_5bedOrMore"
+    # df15 = pandas_gbq.read_gbq(SQL15)
+    # SQL16 = "SELECT * FROM HomeViz.home_value_byCounty_medianPerSqft"
+    # df16 = pandas_gbq.read_gbq(SQL16)
+
+    # # Convert id column (state + county code) to string and add leading zeros 
+    # # (to match TOPOJSON id format)
+    # df2['id'] = df2['id'].astype(str)
+    # df2['id'] = df2['id'].apply(lambda x: x.zfill(5))
+
+    # # Create new column "id" by concatenating "StateCodeFIPS" and "MunicipalCodeFIPS" columns
+    # for df in county_dfs:
+    #     df["StateCodeFIPS"] = df["StateCodeFIPS"].astype(str).apply(lambda x: x.zfill(2))
+    #     df["MunicipalCodeFIPS"] = df["MunicipalCodeFIPS"].astype(str).apply(lambda x: x.zfill(3))
+    #     df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
+
+    # df1.to_pickle("./static/df1,pkl")
+    # df2.to_pickle("./static/df2,pkl")
+    # df3.to_pickle("./static/df3,pkl")
+    # df4.to_pickle("./static/df4,pkl")
+    # df5.to_pickle("./static/df5,pkl")
+    # df6.to_pickle("./static/df6,pkl")
+    # df7.to_pickle("./static/df7,pkl")
+    # df8.to_pickle("./static/df8,pkl")
+    # df9.to_pickle("./static/df9,pkl")
+    # df10.to_pickle("./static/df10.pkl")
+    # df11.to_pickle("./static/df11.pkl")
+    # df12.to_pickle("./static/df12.pkl")
+    # df13.to_pickle("./static/df13.pkl")
+    # df14.to_pickle("./static/df14.pkl")
+    # df15.to_pickle("./static/df15.pkl")
+    # df16.to_pickle("./static/df16.pkl")
+
+    # df1 = pd.read_pickle(static("df1.pkl"))
+    # df2 = pd.read_pickle(static("df2.pkl"))
+    # df3 = pd.read_pickle(static("df3.pkl"))
+    # df4 = pd.read_pickle(static("df4.pkl"))
+    # df5 = pd.read_pickle(static("df5.pkl"))
+    # df6 = pd.read_pickle(static("df6.pkl"))
+    # df7 = pd.read_pickle(static("df7.pkl"))
+    # df8 = pd.read_pickle(static("df8.pkl"))
+    # df9 = pd.read_pickle(static("df9.pkl"))
+    # df10.to_pickle("./static/df10.pkl")
+    # df11.to_pickle("./static/df11.pkl")
+    # df12.to_pickle("./static/df12.pkl")
+    # df13.to_pickle("./static/df13.pkl")
+    # df14.to_pickle("./static/df14.pkl")
+    # df15.to_pickle("./static/df15.pkl")
+    # df16.to_pickle("./static/df16.pkl")
+
+    # df1 = pd.read_pickle(find("df1.pkl"))
+    # df2 = pd.read_pickle(find("df2.pkl"))
+    # df3 = pd.read_pickle(find("df3.pkl"))
+    # df4 = pd.read_pickle(find("df4.pkl"))
+    # df5 = pd.read_pickle(find("df5.pkl"))
+    # df6 = pd.read_pickle(find("df6.pkl"))
+    # df7 = pd.read_pickle(find("df7.pkl"))
+    # df8 = pd.read_pickle(find("df8.pkl"))
+    # df9 = pd.read_pickle(find("df9.pkl"))
+    # df10 = pd.read_pickle(find("df10.pkl"))
+    # df11 = pd.read_pickle(find("df11.pkl"))
+    # df12 = pd.read_pickle(find("df12.pkl"))
+    # df13 = pd.read_pickle(find("df13.pkl"))
+    # df14 = pd.read_pickle(find("df14.pkl"))
+    # df15 = pd.read_pickle(find("df15.pkl"))
+    # df16 = pd.read_pickle(find("df16.pkl"))
+
+    # state_dfs = [df3, df4, df5, df6, df7, df8, df9]
+    # county_dfs = [df10, df11, df12, df13, df14, df15, df16]
+
     # data = {}
+
     # # Consolidated data for heat map (state)
     # for cat in state_col_label:
     #     data[cat] = df1.set_index("RegionName")[cat].dropna().to_dict()
@@ -114,23 +235,31 @@ def home(request):
     # with open("./static/hist.pkl", "wb") as handle:
     #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    income = {}
-
-    # Get income data
-    SQL = "SELECT FIPS, Area_name, Median_Household_income_2017 AS income, Unemployment_rate_2018 AS unemployment FROM HomeViz.income"
-    df = pandas_gbq.read_gbq(SQL)
-    df["FIPS"] = df["FIPS"].astype(str).apply(lambda x: x.zfill(5))
-    income['income'] = df.set_index('FIPS')['income'].dropna().to_dict()
-    income['unemployment'] = df.set_index('FIPS')['unemployment'].dropna().to_dict()
-
-
     # Retrieve Cache files
     with open(find("data.pkl"), "rb") as handle:
         data = pickle.load(handle)
     with open(find("hist.pkl"), "rb") as handle:
         hist = pickle.load(handle)
 
-    return render(request, 'home.html', {"data": data, "hist": hist, "income": income})
+    # # Cache JSON files
+    # with open("./static/data.txt", "w") as handle:
+    #     json.dump(data, handle)
+    # with open("./static/hist.txt", "w") as handle:
+    #     json.dump(hist, handle)
+
+    # # Retrieve Cache JSON files
+    # with open(find("data.txt"), "r") as handle:
+    #     data = json.load(handle)
+    # with open(find("hist.txt"), "r") as handle:
+    #     hist = json.load(handle)
+
+    # # Dump for saving files
+    # data_file = bz2.BZ2File(find('data.s'), 'r')
+    # data = pickle.load(data_file)
+    # hist_file = bz2.BZ2File(find('hist.s'), 'r')
+    # hist = pickle.load(hist_file)
+
+    return render(request, 'home.html', {"data": data, "hist": hist})
 
 def test(request):
     data = {}
