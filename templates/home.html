@@ -17,6 +17,10 @@
   </div>
   <div class="viz"></div>
   <div class="chart"></div>
+<!--   <div class = "tooltip" style="opacity: 0;" >
+      <p><strong><span id='title'>Null</span></strong></p>
+  </div> -->
+
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
   <script type="text/javascript" src="https://d3js.org/topojson.v3.min.js"></script>
@@ -29,7 +33,7 @@
       console.log(data_all)
       console.log(hist_all)
       console.log(income)
-      home(data_all, hist_all)
+      home(data_all, hist_all, income)
       // line_plot(hist)
   </script>
 

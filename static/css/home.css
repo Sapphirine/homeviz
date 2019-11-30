@@ -58,10 +58,12 @@
 
 .tooltip { 
     position: absolute;     
-    text-align: center;     
-    width: 180px;          
-    height: 100px;         
-    padding: 5px 0;       
+    text-align: left;     
+    width: 220px;          
+    height: 180px;         
+    padding: 5px 0;
+    padding-left: 10px; 
+    padding-right: 10px;      
     font: 12px sans-serif;    
     background: #fff; 
     border: 2px solid black;        

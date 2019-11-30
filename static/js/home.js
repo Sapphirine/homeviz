@@ -1,7 +1,7 @@
 // HomeViz Javascript
 // By: Enoch Shum
 
-function home(data_all, hist_all){
+function home(data_all, hist_all, income){
 // // Load historical data 
 //    function loadJSON(callback) {   
 
@@ -57,6 +57,8 @@ function home(data_all, hist_all){
     var tooltip = d3.select("body").append("div") 
         .attr("class", "tooltip")       
         .style("opacity", 0);
+
+    // var tooltip = d3.select(".tooltip")
 
     // Add dropbox
     // var categories = {"all": "All", "1bed": "1 Bedroom", "2bed": "2 Bedrooms", 
@@ -170,11 +172,16 @@ function home(data_all, hist_all){
             .style("fill", function(d){return ramp(data1[d.id])})
             .on("click", reset)
             .on("mouseover", function(d){
+                var _income = income['income'][d.id].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
+                var _data = data1[d.id].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
                 d3.select(this).style('fill-opacity', 0.7);
               	tooltip.transition()
                   	.duration(900)
                   	.style("opacity", 1);
-                tooltip.html(d.properties.name + "<br/>" + data_label + data1[d.id]) 
+                tooltip.html("County: " + d.properties.name + "<br/>" + "<hr/>"
+                            + "Median Household Income: " + _income + "<br/>" 
+                            + "Unemployment Rate: " + income['unemployment'][d.id] + "<br/>" + "<hr/>"
+                            + data_label + _data + "<hr/>")
                   	.style("left", (d3.event.pageX) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
                 line_plot(hist1[d.id])
@@ -197,11 +204,16 @@ function home(data_all, hist_all){
             // .style("fill", function(d){return ramp(data[d.properties.name])})
             .on("click", clicked)
             .on("mouseover", function(d){
+                var _income = income['income'][d.id + '000'].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
+                var _data = data[d.properties.name].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
                 d3.select(this).style('fill-opacity', 0.7);
               	tooltip.transition()
                   	.duration(900)
                   	.style("opacity", 0.8);
-                tooltip.html("State: " + d.properties.name + "<br/>" + data_label + data[d.properties.name])
+                tooltip.html(" State: " + d.properties.name + "<br/>" + "<hr/>"
+                            + "Median Household Income: " + _income + "<br/>" 
+                            + "Unemployment Rate: " + income['unemployment'][d.id + '000'] + "%<br/>" + "<hr/>"
+                            + data_label + _data + "<hr/>")
                   	.style("left", (d3.event.pageX + 30) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
                 line_plot(hist[d.properties.name])
@@ -230,8 +242,8 @@ function home(data_all, hist_all){
         //               '4Bed Home Price: ', '5Bed+ Home Price: ', 'Home Price Per Sqft: ', 'Single Family Home Price: ',
         //               'Condo/Co-op Home Price: ', 'Top Tier Home Price: ', 'Bottom Tier Home Price: '];
         var picklist = ['all', 'singleFamily', 'condo', 'topTier', 'bottomTier'];
-        var caption = ['Median Home Price: ', 'Single Family Home Price: ',
-                      'Condo/Co-op Home Price: ', 'Top Tier Home Price: ', 'Bottom Tier Home Price: '];
+        var caption = ['Home Price: ', 'Single Family Home: ',
+                      'Condo/Co-op: ', 'Top Tier Home: ', 'Bottom Tier Home: '];
 
         var display = {};
         for (i = 0; i < picklist.length; i++){
@@ -279,7 +291,7 @@ function home(data_all, hist_all){
             		.style("opacity", 0.5)
             		.append("title")
             		.text(function(d){
-            			return d.name + "\nPopulation: " + d.Population;
+            			 return d.name + "\nPopulation: " + d.Population;
             		});
         });
 
@@ -355,7 +367,7 @@ function home(data_all, hist_all){
     function line_plot(hist){
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 40, bottom: 20, left: 50},
-            width = 200 - margin.left - margin.right,
+            width = 220 - margin.left - margin.right,
             height = 80 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
@@ -414,6 +426,30 @@ function home(data_all, hist_all){
               .style("stroke-width",3)
 
         }
+
+    function tooltip_text(content){
+        console.log("Income", content)
+        var margin = {top: 10, right: 40, bottom: 20, left: 50},
+            width = 200 - margin.left - margin.right,
+            height = 80 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select(".tooltip")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+        //Add the SVG Text Element to the svgContainer
+        var text = svg.selectAll("text")
+            .enter()
+            .append("text")
+            .text(content)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "10px")
+    }
 
 
     // function line_plot_bottom(hist){
