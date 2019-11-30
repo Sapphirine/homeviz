@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import pickle
 import json
+import bz2
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 # from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.staticfiles.finders import find
@@ -77,12 +78,6 @@ def home(request):
     #     df["id"] = df["StateCodeFIPS"] + df["MunicipalCodeFIPS"]
     #     data["county_" + table] = df.set_index('id').iloc[:,-2].rename("county_" + table).dropna().to_dict()
     #     hist["county_" + table] = df.drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
-
-    # # Cache files
-    # with open("./static/data.pkl", "wb") as handle:
-    #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    # with open("./static/hist.pkl", "wb") as handle:
-    #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
  
     # SQL1 = "SELECT * FROM HomeViz.home_value_byState_2019_09"
     # df1 = pandas_gbq.read_gbq(SQL1)
@@ -202,6 +197,11 @@ def home(request):
     # for i, cat in enumerate(county_col_label):
     #     hist[cat] = county_dfs[i].drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
 
+    # # Cache files
+    # with open("./static/data.pkl", "wb") as handle:
+    #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    # with open("./static/hist.pkl", "wb") as handle:
+    #     pickle.dump(hist, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     # # Retrieve Cache files
     # with open(find("data.pkl"), "rb") as handle:
@@ -215,11 +215,17 @@ def home(request):
     # with open("./static/hist.txt", "w") as handle:
     #     json.dump(hist, handle)
 
-    # Retrieve Cache JSON files
-    with open(find("data.txt"), "r") as handle:
-        data = json.load(handle)
-    with open(find("hist.txt"), "r") as handle:
-        hist = json.load(handle)
+    # # Retrieve Cache JSON files
+    # with open(find("data.txt"), "r") as handle:
+    #     data = json.load(handle)
+    # with open(find("hist.txt"), "r") as handle:
+    #     hist = json.load(handle)
+
+    # Dump for saving files
+    data_file = bz2.BZ2File(find('data.s'), 'r')
+    data = pickle.load(data_file)
+    hist_file = bz2.BZ2File(find('hist.s'), 'r')
+    hist = pickle.load(hist_file)
 
     return render(request, 'home.html', {"data": data, "hist": hist})
 
