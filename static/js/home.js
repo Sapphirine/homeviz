@@ -2,6 +2,37 @@
 // By: Enoch Shum
 
 function home(data_all, hist_all){
+// // Load historical data 
+//    function loadJSON(callback) {   
+
+//       var xobj = new XMLHttpRequest();
+//           xobj.overrideMimeType("application/json");
+//       xobj.open('GET', 'static/hist.txt', true); // Replace 'my_data' with the path to your file
+//       xobj.onreadystatechange = function () {
+//             if (xobj.readyState == 4 && xobj.status == "200") {
+//               // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+//               callback(xobj.responseText);
+//             }
+//       };
+//       xobj.send(null);  
+//    }
+//     function init() {
+//        loadJSON(function(response) {
+//         // Parse JSON string into object
+//           var hist_all = JSON.parse(response);
+//        });
+//     }
+//     init()
+
+    // const fs = require('fs')
+    // fs.readFile('static/hist.txt', 'utf8', (err, hist_all) => {
+    //     if (err) {
+    //         console.log("File read failed:", err)
+    //         return
+    //     }
+    //     console.log('File data:', hist_all) 
+    // })
+
 // Set dimensions of map
     var margin = {top: 10, bottom: 10, left: 10, right:10},
         width = parseInt(d3.select('.viz').style('width')) - margin.left - margin.right,
