@@ -7,6 +7,7 @@ import sys
 import os
 import pandas as pd
 import pickle
+import json
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 # from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.staticfiles.finders import find
@@ -202,11 +203,23 @@ def home(request):
     #     hist[cat] = county_dfs[i].drop(columns=['RegionID', 'RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS', 'SizeRank']).set_index("id").fillna(0).to_dict(orient='index')
 
 
-    # Retrieve Cache files
-    with open(find("data.pkl"), "rb") as handle:
-        data = pickle.load(handle)
-    with open(find("hist.pkl"), "rb") as handle:
-        hist = pickle.load(handle)
+    # # Retrieve Cache files
+    # with open(find("data.pkl"), "rb") as handle:
+    #     data = pickle.load(handle)
+    # with open(find("hist.pkl"), "rb") as handle:
+    #     hist = pickle.load(handle)
+
+    # # Cache JSON files
+    # with open("./static/data.txt", "w") as handle:
+    #     json.dump(data, handle)
+    # with open("./static/hist.txt", "w") as handle:
+    #     json.dump(hist, handle)
+
+    # Retrieve Cache JSON files
+    with open(find("data.txt"), "r") as handle:
+        data = json.load(handle)
+    with open(find("hist.txt"), "r") as handle:
+        hist = json.load(handle)
 
     return render(request, 'home.html', {"data": data, "hist": hist})
 
