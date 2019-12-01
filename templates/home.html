@@ -30,10 +30,12 @@
       var data_all = {{ data | safe }}
       var hist_all = {{ hist | safe }}
       var income = {{ income | safe }}
-      console.log(data_all)
-      console.log(hist_all)
-      console.log(income)
-      home(data_all, hist_all, income)
+      var summary = {{ summary | safe }}
+      console.log("data", data_all)
+      console.log("hist", hist_all)
+      console.log("income", income)
+      console.log("summary", summary)
+      home(data_all, hist_all, income, summary)
       // line_plot(hist)
   </script>
 

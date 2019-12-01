@@ -124,6 +124,18 @@ def home(request):
     # with open("./static/income.pkl", "wb") as handle:
     #     pickle.dump(income, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+    # summary = {}
+    # # Get income data
+    # SQL = "SELECT * FROM HomeViz.home_value_byState_summaryAll"
+    # df = pandas_gbq.read_gbq(SQL)
+    # summary['state'] = df.set_index('RegionName').drop(columns=['Date', 'RegionID']).dropna().to_dict(orient='index')
+    # SQL = "SELECT index.id, summary.state, summary.SizeRank, summary.zhvi, summary.MoM, summary.QoQ, summary.YoY, summary._5Year, summary._10Year, summary.PeakMonth, summary.PeakQuarter, summary.PeakZHVI, summary.PctFallFromPeak, summary.LastTimeAtCurrZHVI FROM HomeViz.home_value_byCounty_summaryAll AS summary JOIN HomeViz.county_index as index ON summary.RegionID = index.RegionID and summary.state = index.state"
+    # df = pandas_gbq.read_gbq(SQL)
+    # df["id"] = df["id"].astype(str).apply(lambda x: x.zfill(5))
+    # summary['county'] = df.set_index('id').dropna().to_dict(orient='index')
+    # with open("./static/summary.pkl", "wb") as handle:
+    #     pickle.dump(summary, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
     # Retrieve Cache files
     with open(find("data.pkl"), "rb") as handle:
         data = pickle.load(handle)
@@ -131,8 +143,11 @@ def home(request):
         hist = pickle.load(handle)
     with open(find("income.pkl"), "rb") as handle:
         income = pickle.load(handle)
+    with open(find("summary.pkl"), "rb") as handle:
+        summary = pickle.load(handle)
 
-    return render(request, 'home.html', {"data": data, "hist": hist, "income": income})
+
+    return render(request, 'home.html', {"data": data, "hist": hist, "income": income, "summary": summary})
 
 def test(request):
     data = {}

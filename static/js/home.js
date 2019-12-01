@@ -1,7 +1,7 @@
 // HomeViz Javascript
 // By: Enoch Shum
 
-function home(data_all, hist_all, income){
+function home(data_all, hist_all, income, summary){
 // // Load historical data 
 //    function loadJSON(callback) {   
 
@@ -174,14 +174,54 @@ function home(data_all, hist_all, income){
             .on("mouseover", function(d){
                 var _income = income['income'][d.id].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
                 var _data = data1[d.id].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
+                var _summary = summary['county'][d.id]
+                if (typeof _summary != 'undefined'){
+                    var sizeRank = _summary["SizeRank"]
+                    var MoM = _summary["MoM"]
+                    var QoQ = _summary["QoQ"]
+                    var YoY = _summary["YoY"]
+                    var year5 = _summary["_5Year"]
+                    var year10 = _summary["_10Year"]
+                    var peakMonth = _summary["PeakMonth"]
+                    var pctFromPeak = _summary["PctFallFromPeak"]
+                    var lastTime = _summary["LastTimeAtCurrZHVI"]
+                    var p = [MoM, QoQ, YoY, year5, year10, pctFromPeak]
+                    for (var i = 0; i < p.length; i++) {
+                        if (_summary==null){
+                            p[i] = "N/A"  
+                        } else if (p[i] > 0){
+                            p[i] = "<font color=\"green\">" + p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) + "</font>"
+                        } else if (p[i] < 0) {
+                            p[i] = "<font color=\"red\">" + p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) + "</font>"
+                        } else {
+                            p[i] = p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2})
+                        }
+                    }
+                } else {
+                    var p = [];
+                    var sizeRank = " - ";
+                    for (var i = 0; i < 6; i++){
+                        p[i] = " - "
+                    } 
+                }
+                if (peakMonth=="2019-09"){
+                    peakMonth = "Now"
+                }
+                if (lastTime=="2019-09"){
+                    lastTime = "Current Peak"
+                }
                 d3.select(this).style('fill-opacity', 0.7);
               	tooltip.transition()
                   	.duration(900)
                   	.style("opacity", 1);
-                tooltip.html("County: " + d.properties.name + "<br/>" + "<hr/>"
+                tooltip.html("<h2>"+ d.properties.name + " County" + "</h2>" + " (Size Rank: " + sizeRank + ")" + "<br/>" + "<hr/>"
                             + "Median Household Income: " + _income + "<br/>" 
-                            + "Unemployment Rate: " + income['unemployment'][d.id] + "<br/>" + "<hr/>"
-                            + data_label + _data + "<hr/>")
+                            + "Unemployment Rate: " + income['unemployment'][d.id + '000'] + "%<br/>" + "<hr/>"
+                            + "MoM: " + p[0] + ", QoQ: " + p[1] + ", YoY: " + p[2] + "<br/>" 
+                            + "5 Year: " + p[3] + ", 10 Year: " + p[4] + "<br/>" 
+                            + "Peak: " + peakMonth + ", %-from-peak: " + p[5] +  "<br/>" 
+                            + "Last time @ Current Price: " + lastTime + "<hr/>"
+                            + data_label + _data)
                   	.style("left", (d3.event.pageX) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
                 line_plot(hist1[d.id])
@@ -206,14 +246,43 @@ function home(data_all, hist_all, income){
             .on("mouseover", function(d){
                 var _income = income['income'][d.id + '000'].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
                 var _data = data[d.properties.name].toLocaleString('us-US', { style: 'currency', currency: 'USD' })
+                var _summary = summary['state'][d.properties.name]
+                var MoM = _summary["MoM"]
+                var QoQ = _summary["QoQ"]
+                var YoY = _summary["YoY"]
+                var year5 = _summary["_5Year"]
+                var year10 = _summary["_10Year"]
+                var peakMonth = _summary["PeakMonth"]
+                var pctFromPeak = _summary["PctFallFromPeak"]
+                var lastTime = _summary["LastTimeAtCurrZHVI"]
+                var p = [MoM, QoQ, YoY, year5, year10, pctFromPeak]
+                for (var i = 0; i < p.length; i++) {
+                    if (p[i] > 0){
+                        p[i] = "<font color=\"green\">" + p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) + "</font>"
+                    } else if (p[i] < 0) {
+                        p[i] = "<font color=\"red\">" + p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) + "</font>"
+                    } else {
+                        p[i] = p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2})
+                    }
+                }
+                if (peakMonth=="2019-09"){
+                    peakMonth = "Now"
+                }
+                if (lastTime=="2019-09"){
+                    lastTime = "Current Peak"
+                }
                 d3.select(this).style('fill-opacity', 0.7);
               	tooltip.transition()
                   	.duration(900)
                   	.style("opacity", 0.8);
-                tooltip.html(" State: " + d.properties.name + "<br/>" + "<hr/>"
+                tooltip.html("<h2>"+ d.properties.name + "</h2>" + " (Size Rank: " + _summary['SizeRank'] + ")" + "<br/>" + "<hr/>"
                             + "Median Household Income: " + _income + "<br/>" 
                             + "Unemployment Rate: " + income['unemployment'][d.id + '000'] + "%<br/>" + "<hr/>"
-                            + data_label + _data + "<hr/>")
+                            + "MoM: " + p[0] + ", QoQ: " + p[1] + ", YoY: " + p[2] + "<br/>" 
+                            + "5 Year: " + p[3] + ", 10 Year: " + p[4] + "<br/>" 
+                            + "Peak: " + peakMonth + ", %-from-peak: " + p[5] +  "<br/>" 
+                            + "Last time @ Current Price: " + lastTime + "<hr/>"
+                            + data_label + _data)
                   	.style("left", (d3.event.pageX + 30) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
                 line_plot(hist[d.properties.name])
