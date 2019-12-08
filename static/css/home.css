@@ -15,6 +15,14 @@
     position:absolute;
 }
 
+.header {
+  padding: 20px;
+  text-align: center;
+  background: #2F4F4F;
+  color: white;
+  font-size: 30px;
+}
+
 .select-style {
     border: 1px solid #ccc;
     /*width: 120px;*/
@@ -60,7 +68,7 @@
     position: absolute;     
     text-align: left;     
     width: 220px;          
-    height: 300px;         
+    height: 310px;         
     padding: 5px 0;
     padding-left: 10px; 
     padding-right: 10px;      

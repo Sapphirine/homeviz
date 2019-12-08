@@ -90,6 +90,16 @@ function home(data_all, hist_all, income, summary){
     // Load counties data
     Promise.resolve(d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json')).then(DrawMap);
 
+    // Load forecast data into dictionary
+    var forecast = {};
+    d3.csv("static/forecast_data.csv").then(function(raw_data){
+        console.log("raw forecase", raw_data)
+        raw_data.forEach(function(d){
+            forecast[(d.ID).padStart(5, "0")] = d
+        });
+        console.log("forecast", forecast)
+    });
+
     // Set projection
     var projection = d3.geoAlbersUsa()
         .translate([width /2 , height / 2])
@@ -186,6 +196,24 @@ function home(data_all, hist_all, income, summary){
                     var pctFromPeak = _summary["PctFallFromPeak"]
                     var lastTime = _summary["LastTimeAtCurrZHVI"]
                     var p = [MoM, QoQ, YoY, year5, year10, pctFromPeak]
+                    var prediction = forecast[d.id]
+                    if (typeof prediction != 'undefined'){
+                        prediction = (parseFloat(prediction["ForecastYoYPctChange"]) / 100)
+                                      
+                        if (prediction > 0){
+                            prediction = "<font color=\"green\"> &#8593; " 
+                                        + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) 
+                                        + "</font>"
+                        } else if (prediction < 0){
+                            prediction = "<font color=\"red\"> &#8595; " 
+                                        + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) 
+                                        + "</font>"
+                        } else {
+                            prediction = "&#8594; " + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2})
+                        }
+                    } else {
+                        prediction = "-"
+                    }
                     for (var i = 0; i < p.length; i++) {
                         if (_summary==null){
                             p[i] = "N/A"  
@@ -216,11 +244,12 @@ function home(data_all, hist_all, income, summary){
                   	.style("opacity", 1);
                 tooltip.html("<h2>"+ d.properties.name + " County" + "</h2>" + " (Size Rank: " + sizeRank + ")" + "<br/>" + "<hr/>"
                             + "Median Household Income: " + _income + "<br/>" 
-                            + "Unemployment Rate: " + income['unemployment'][d.id + '000'] + "%<br/>" + "<hr/>"
+                            + "Unemployment Rate: " + income['unemployment'][d.id] + "%<br/>" + "<hr/>"
                             + "MoM: " + p[0] + ", QoQ: " + p[1] + ", YoY: " + p[2] + "<br/>" 
                             + "5 Year: " + p[3] + ", 10 Year: " + p[4] + "<br/>" 
                             + "Peak: " + peakMonth + ", %-from-peak: " + p[5] +  "<br/>" 
                             + "Last time @ Current Price: " + lastTime + "<hr/>"
+                            + "Forecast (next year): " + prediction + "<hr/>"
                             + data_label + _data)
                   	.style("left", (d3.event.pageX) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
@@ -256,6 +285,25 @@ function home(data_all, hist_all, income, summary){
                 var pctFromPeak = _summary["PctFallFromPeak"]
                 var lastTime = _summary["LastTimeAtCurrZHVI"]
                 var p = [MoM, QoQ, YoY, year5, year10, pctFromPeak]
+                var prediction = forecast[d.id + '000']
+                if (typeof prediction != 'undefined'){
+                    prediction = (parseFloat(prediction["ForecastYoYPctChange"]) / 100)
+                                  
+                    if (prediction > 0){
+                        prediction = "<font color=\"green\"> &#8593; " 
+                                    + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) 
+                                    + "</font>"
+                    } else if (prediction < 0){
+                        prediction = "<font color=\"red\"> &#8595; " 
+                                    + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) 
+                                    + "</font>"
+                    } else {
+                        prediction = "&#8594; " + prediction.toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2})
+                    }
+                } else {
+                    prediction = "-"
+                }
+
                 for (var i = 0; i < p.length; i++) {
                     if (p[i] > 0){
                         p[i] = "<font color=\"green\">" + p[i].toLocaleString('en-us', {style: 'percent', maximumSignificantDigits: 2}) + "</font>"
@@ -282,6 +330,7 @@ function home(data_all, hist_all, income, summary){
                             + "5 Year: " + p[3] + ", 10 Year: " + p[4] + "<br/>" 
                             + "Peak: " + peakMonth + ", %-from-peak: " + p[5] +  "<br/>" 
                             + "Last time @ Current Price: " + lastTime + "<hr/>"
+                            + "Forecast (next year): " + prediction + "<hr/>"
                             + data_label + _data)
                   	.style("left", (d3.event.pageX + 30) + "px")
                   	.style("top", (d3.event.pageY - 28) + "px");
