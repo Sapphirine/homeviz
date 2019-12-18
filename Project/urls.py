@@ -21,14 +21,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
 urlpatterns = [
     path('home', view.home),
-	path('hello', view.hello),
-    path('dashboard', view.dashboard),
-    path('connection', view.connection),
-    path('test', view.test),
-    # path(r'^static/(?P<path>.*)$', 'django.views.static.serve',
-    #         {'document_root': settings.STATIC_ROOT}),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^$', default_urlconf), 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
