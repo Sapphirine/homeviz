@@ -2,36 +2,6 @@
 // By: Enoch Shum
 
 function home(data_all, hist_all, income, summary){
-// // Load historical data 
-//    function loadJSON(callback) {   
-
-//       var xobj = new XMLHttpRequest();
-//           xobj.overrideMimeType("application/json");
-//       xobj.open('GET', 'static/hist.txt', true); // Replace 'my_data' with the path to your file
-//       xobj.onreadystatechange = function () {
-//             if (xobj.readyState == 4 && xobj.status == "200") {
-//               // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-//               callback(xobj.responseText);
-//             }
-//       };
-//       xobj.send(null);  
-//    }
-//     function init() {
-//        loadJSON(function(response) {
-//         // Parse JSON string into object
-//           var hist_all = JSON.parse(response);
-//        });
-//     }
-//     init()
-
-    // const fs = require('fs')
-    // fs.readFile('static/hist.txt', 'utf8', (err, hist_all) => {
-    //     if (err) {
-    //         console.log("File read failed:", err)
-    //         return
-    //     }
-    //     console.log('File data:', hist_all) 
-    // })
 
 // Set dimensions of map
     var margin = {top: 10, bottom: 10, left: 10, right:10},
@@ -58,9 +28,6 @@ function home(data_all, hist_all, income, summary){
         .attr("class", "tooltip")       
         .style("opacity", 0);
 
-    // var tooltip = d3.select(".tooltip")
-
-    // Add dropbox
     // var categories = {"all": "All", "1bed": "1 Bedroom", "2bed": "2 Bedrooms", 
     //                 "3bed": "3 Bedrooms", "4bed": "4 Bedrooms", "5bedOrMore": "5 Bedrooms+",
     //                 "medianPerSqft": "Median Per Sqft", "singleFamily": "Single Family", 
@@ -126,8 +93,8 @@ function home(data_all, hist_all, income, summary){
         hist1 = hist_all['county_all']
         // console.log(hist)
              		
-      	var lowColor = '#98f692'//'#f9f9f9'
-      	var highColor = '#bc2a66'//'#bc2a66'
+      	var lowColor = '#98f692'
+      	var highColor = '#bc2a66'
       	var keys = Object.keys(data);
       	var norm = 0.8;
       	var minVal = Math.min.apply(null, keys.map(function(x) { return data[x]} ));
@@ -569,68 +536,4 @@ function home(data_all, hist_all, income, summary){
             .attr("font-size", "10px")
     }
 
-
-    // function line_plot_bottom(hist){
-    //     // set the dimensions and margins of the graph
-    //     var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    //         width = 200 - margin.left - margin.right,
-    //         height = 70 - margin.top - margin.bottom;
-
-    //     // append the svg object to the body of the page
-    //     var svg = d3.select(".viz")
-    //       .append("svg")
-    //         .attr("width", width + margin.left + margin.right)
-    //         .attr("height", height + margin.top + margin.bottom)
-    //       .append("g")
-    //         .attr("transform",
-    //               "translate(" + margin.left + "," + margin.top + ")");
-
-    //     //Read the data
-    //     hist_data = hist['Washington']
-    //     data = d3.entries(hist_data, function(d){
-    //         return { date : d3.timeParse("%Y_%m")(d.key.slice(1,8)), value : d.value }
-    //     })
-    //         // Add X axis --> it is a date format
-    //     console.log(data)
-    //     var x = d3.scaleTime()
-    //       .domain(d3.extent(data, function(d) { return d3.timeParse("%Y_%m")(d.key.slice(1,8)); }))
-    //       .range([ 0, width ]);
-    //     svg.append("g")
-    //       .style("font", "8px sans-serif")
-    //       .attr("transform", "translate(0," + height + ")")
-    //       .call(d3.axisBottom(x).ticks(4));
-
-    //     // Add Y axis
-    //     var y = d3.scaleLinear()
-    //       .domain([0, d3.max(data, function(d) { return +d.value; })])
-    //       .range([ height, 0 ]);
-    //     svg.append("g")
-    //       .style("font", "8px sans-serif")
-    //       .call(d3.axisLeft(y).ticks(3));
-
-    //     // Add the line
-    //     svg.append("path")
-    //       .datum(data)
-    //       .attr("id", "line")
-    //       .attr("fill", "none")
-    //       .attr("stroke", "steelblue")
-    //       // .attr("stroke-width", 4)
-    //       .attr("d", d3.line()
-    //         .x(function(d) { return x(d3.timeParse("%Y_%m")(d.key.slice(1,8))) })
-    //         .y(function(d) { return y(d.value) })
-    //       )
-        
-    //     // Add some animation
-    //     d3.selectAll("#line").style("opacity","0");
-    //     d3.selectAll("#line").style("opacity","1");
-    //     var totalLength = d3.select("#line").node().getTotalLength();
-    //     d3.selectAll("#line")
-    //       .attr("stroke-dasharray", totalLength + " " + totalLength)
-    //       .attr("stroke-dashoffset", totalLength)
-    //       .transition()
-    //           .duration(2000)
-    //           .attr("stroke-dashoffset", 0)
-    //           .style("stroke-width",3)
-
-    //     }
 }
